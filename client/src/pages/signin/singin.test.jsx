@@ -1,25 +1,15 @@
 import { fireEvent, screen } from '@testing-library/react';
-import Signup from './Signup';
+import Signin from './Signin';
 import { renderWithProviders } from '../../utils/utils-for-tests';
 
-describe('SignUp', () => {
+describe('SignIn', () => {
   test('renders correctly', () => {
-    renderWithProviders(<Signup />);
+    renderWithProviders(<Signin />);
 
     const headerEl = screen.getByRole('heading', {
-      name: 'Sign Up',
+      name: 'Sign In',
     });
     expect(headerEl).toBeInTheDocument();
-
-    const usernameInputEl = screen.getByRole('textbox', {
-      name: 'Username',
-    });
-    expect(usernameInputEl).toBeInTheDocument();
-
-    const school_nameInputEl = screen.getByRole('textbox', {
-      name: 'School name',
-    });
-    expect(school_nameInputEl).toBeInTheDocument();
 
     const emailInputEl = screen.getByRole('textbox', {
       name: 'Email',
@@ -29,31 +19,21 @@ describe('SignUp', () => {
     const passwordInputEl = screen.getByLabelText('Password');
     expect(passwordInputEl).toBeInTheDocument();
 
-    const signupButtonEl = screen.getByRole('button', {
-      name: 'Sign Up',
+    const signinButtonEl = screen.getByRole('button', {
+      name: 'Sign In',
     });
-    expect(signupButtonEl).toBeInTheDocument();
+    expect(signinButtonEl).toBeInTheDocument();
   });
 
   test('error message should not be displayed', () => {
-    renderWithProviders(<Signup />);
+    renderWithProviders(<Signin />);
 
     const errorMessageEl = screen.queryByTestId('error');
     expect(errorMessageEl).not.toBeInTheDocument();
   });
 
   test('all inputs should be empty', () => {
-    renderWithProviders(<Signup />);
-
-    const usernameInputEl = screen.getByRole('textbox', {
-      name: 'Username',
-    });
-    expect(usernameInputEl.value).toBe('');
-
-    const school_nameInputEl = screen.getByRole('textbox', {
-      name: 'School name',
-    });
-    expect(school_nameInputEl.value).toBe('');
+    renderWithProviders(<Signin />);
 
     const emailInputEl = screen.getByRole('textbox', {
       name: 'Email',
@@ -65,22 +45,9 @@ describe('SignUp', () => {
   });
 
   test('all inputs should change', () => {
-    renderWithProviders(<Signup />);
+    renderWithProviders(<Signin />);
 
     const testValue = 'test';
-
-    const usernameInputEl = screen.getByRole('textbox', {
-      name: 'Username',
-    });
-    fireEvent.change(usernameInputEl, { target: { value: testValue } });
-    expect(usernameInputEl.value).toBe(testValue);
-
-    const school_nameInputEl = screen.getByRole('textbox', {
-      name: 'School name',
-    });
-    fireEvent.change(school_nameInputEl, { target: { value: testValue } });
-
-    expect(school_nameInputEl.value).toBe(testValue);
 
     const emailInputEl = screen.getByRole('textbox', {
       name: 'Email',
