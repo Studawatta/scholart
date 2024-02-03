@@ -10,27 +10,33 @@ const Header = () => {
   return (
     <div>
       <h1 className=" text-2xl select-none mb-5  lg:mb-10 md:text-4xl text-center underline font-semibold italic">
-        {currentUser.school_name.split(' ').map((name) => (
-          <span key={name}>
-            {name.charAt(0).toUpperCase() + name.slice(1)}{' '}
-          </span>
-        ))}
+        {currentUser ? (
+          currentUser.school_name
+            .split(' ')
+            .map((name) => (
+              <span key={name}>
+                {name.charAt(0).toUpperCase() + name.slice(1)}{' '}
+              </span>
+            ))
+        ) : (
+          <span>No User</span>
+        )}
       </h1>
       <div
         className={`bg-white justify-center text-white font-semibold gap-2 py-[2px] px-10 flex lg:text-lg
                      rounded-md flex-col lg:flex-row lg:bg-primaryBlue lg:gap-32 items-center`}
       >
         <Link to={'/'} className={headerButtonStyle}>
-          Home
+          <button>Home</button>
         </Link>
         <Link to={'/teachers'} className={headerButtonStyle}>
-          Teachers
+          <button>Teachers</button>
         </Link>
         <Link to={'/classes'} className={headerButtonStyle}>
-          Classes
+          <button>Classes</button>
         </Link>
         <Link to={'/students'} className={headerButtonStyle}>
-          Students
+          <button>Students</button>
         </Link>
       </div>
     </div>

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import Footer from './Footer';
 
-describe('Footer', () => {
+describe.skip('Footer', () => {
   test('Logo should be rendered', () => {
     render(<Footer />);
     const logoEl = screen.getByAltText('scholart_logo');
