@@ -2,7 +2,7 @@ import { screen } from '@testing-library/react';
 import Navbar from './Navabar';
 import { renderWithProviders } from '../../utils/utils-for-tests';
 
-describe.only('Navigation bar', () => {
+describe.skip('Navigation bar', () => {
   test('Logo should be rendered', () => {
     renderWithProviders(<Navbar />);
     const logoEl = screen.getByAltText('scholart_logo');

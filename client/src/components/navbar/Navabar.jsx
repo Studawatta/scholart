@@ -48,8 +48,8 @@ const Navbar = () => {
     'flex gap-2 items-center justify-center  h-9 sm:h-11 w-20 xs:w-24 sm:w-32 rounded-[20px] xs:rounded-full cursor-pointer duration-500 select-none ';
   return (
     <div
-      className={`fixed top-0 z-50 h-16 sm:h-[72px] w-full px-5 sm:px-16 lg:px-[16%] flex justify-between items-center  ${
-        isScrolled ? 'bg-black/50' : ''
+      className={`fixed top-0 z-50  h-16 sm:h-[72px] w-full px-5 sm:px-16 lg:px-[16%] flex justify-between items-center  ${
+        isScrolled ? 'bg-black/50 backdrop-blur-[5px]' : ''
       } `}
     >
       {/* NAVBAR_LEFT  */}

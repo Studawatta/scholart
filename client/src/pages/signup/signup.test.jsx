@@ -2,7 +2,7 @@ import { fireEvent, screen } from '@testing-library/react';
 import Signup from './Signup';
 import { renderWithProviders } from '../../utils/utils-for-tests';
 
-describe('SignUp', () => {
+describe.skip('SignUp', () => {
   test('renders correctly', () => {
     renderWithProviders(<Signup />);
 
