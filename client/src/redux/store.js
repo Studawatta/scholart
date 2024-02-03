@@ -5,6 +5,7 @@ import rootReducer from './reducer';
 
 const persistConfig = {
   key: 'root',
+  blacklist: ['form'],
   storage,
   version: 1,
 };
