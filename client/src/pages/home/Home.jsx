@@ -16,7 +16,7 @@ const Home = () => {
       <div className="lg:mt-16 mt-8">
         <div className="flex">
           <HomeSideBar />
-          <div className="flex-1 lg:ml-10 bg-slate-200 rounded-md  items-center justify-center lg:h-[400px] py-10 lg:py-0 flex">
+          <div className="flex-1 lg:ml-10 bg-slate-200 rounded-md  items-center justify-center lg:h-[400px] py-10 lg:py-0 flex overflow-hidden">
             {showClassForm ? (
               <AddClass />
             ) : showTeacherForm ? (
