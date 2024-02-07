@@ -1,5 +1,5 @@
-import { addTeacher } from '../services/teacher.sevices.js';
-// import { errorHandler } from '../utils/error.js';
+import { addTeacher, getTeachersByUser } from '../services/teacher.sevices.js';
+import { errorHandler } from '../utils/error.js';
 
 export const addTeacherController = (req, res, next) => {
   const data = {
@@ -15,5 +15,19 @@ export const addTeacherController = (req, res, next) => {
       return next(error);
     }
     return res.status(200).json('Teacher added!');
+  });
+};
+
+export const getTeachersController = (req, res, next) => {
+  if (parseInt(req.params.id) !== req.user.id) {
+    return next(errorHandler(401, 'Unauthorized!'));
+  }
+
+  getTeachersByUser(req.params.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+
+    return res.status(200).json(results);
   });
 };
