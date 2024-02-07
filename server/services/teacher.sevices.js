@@ -13,3 +13,14 @@ export const addTeacher = (data, callBack) => {
     return callBack(null, results);
   });
 };
+
+export const getTeachersByUser = (userId, callBack) => {
+  const q = 'SELECT * FROM teachers WHERE user_id = ?';
+
+  db.query(q, [userId], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
