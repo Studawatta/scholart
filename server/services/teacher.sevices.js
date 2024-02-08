@@ -24,3 +24,25 @@ export const getTeachersByUser = (userId, callBack) => {
     return callBack(null, results);
   });
 };
+
+export const getTeacherById = (id, callBack) => {
+  const q = 'SELECT * FROM teachers WHERE id = ?';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
+export const deleteTeacher = (id, callBack) => {
+  const q = 'DELETE FROM teachers WHERE `id` =  ?';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};

@@ -1,4 +1,9 @@
-import { addTeacher, getTeachersByUser } from '../services/teacher.sevices.js';
+import {
+  addTeacher,
+  getTeachersByUser,
+  getTeacherById,
+  deleteTeacher,
+} from '../services/teacher.sevices.js';
 import { errorHandler } from '../utils/error.js';
 
 export const addTeacherController = (req, res, next) => {
@@ -29,5 +34,28 @@ export const getTeachersController = (req, res, next) => {
     }
 
     return res.status(200).json(results);
+  });
+};
+
+export const deleteTeacherController = (req, res, next) => {
+  getTeacherById(req.params.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    if (results.length === 0) {
+      return next(errorHandler(404, 'Teacher not found!'));
+    }
+    // eslint-disable-next-line no-unused-vars
+    if (results[0].user_id !== req.user.id) {
+      return next(errorHandler(401, 'Unauthorized!'));
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    deleteTeacher(req.params.id, (error, results) => {
+      if (error) {
+        return next(error);
+      }
+      return res.status(200).json('Deleted!');
+    });
   });
 };
