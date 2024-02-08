@@ -12,6 +12,7 @@ const TeachersList = () => {
   const { showTeacherForm } = useSelector((state) => state.form);
   const { currentUser } = useSelector((state) => state.user);
   const [teachers, setTeachers] = useState([]);
+  const [error, setError] = useState('');
 
   //Fetching Data
   useEffect(() => {
@@ -28,9 +29,24 @@ const TeachersList = () => {
       };
       fetchTeachers();
     } catch (error) {
-      console.log(error);
+      setError('Something went wrong!');
     }
   }, [currentUser.id, teachers]);
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(
+        'http://localhost:8080/api/teacher/' + id,
+        {
+          withCredentials: true,
+        }
+      );
+      alert('Deleted!');
+    } catch (error) {
+      console.log(error);
+      alert('Something went wrong!');
+    }
+  };
 
   return (
     <div className=" py-8 px-20">
@@ -51,7 +67,9 @@ const TeachersList = () => {
             <AddTeacher />
           ) : (
             <div>
-              {teachers ? (
+              {error ? (
+                <p className="text-center text-red-500">{error}</p>
+              ) : teachers.length > 0 ? (
                 <div className=" h-full py-1 flex  flex-col items-center">
                   <div className="w-[600px]  flex gap-1 pl-6 ">
                     <h1 className="w-[250px] bg-primaryGreen text-white font-semibold rounded-md text-center select-none">
@@ -63,7 +81,7 @@ const TeachersList = () => {
                   </div>
                   <div className="mt-4 flex flex-col h-[445px] py-1 overflow-auto gap-2">
                     {teachers.map((teacher, index) => (
-                      <div className="w-[600px] flex">
+                      <div key={index} className="w-[600px] flex">
                         <span className="font-semibold w-6">
                           {index < 9 ? '0' + (index + 1) : index + 1}.
                         </span>
@@ -76,7 +94,10 @@ const TeachersList = () => {
                           </p>
                         </div>
 
-                        <span className="font-semibold ml-4 text-red-600 cursor-pointer hover:underline select-none">
+                        <span
+                          onClick={() => handleDelete(teacher.id)}
+                          className="font-semibold ml-4 text-red-600 cursor-pointer hover:underline select-none"
+                        >
                           Delete
                         </span>
                       </div>

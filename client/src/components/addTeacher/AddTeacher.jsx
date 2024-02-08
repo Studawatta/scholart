@@ -121,7 +121,7 @@ const AddTeacher = () => {
         >
           {isLoading ? 'Loading' : 'Submit'}
         </button>
-        {error && <p>{error}</p>}
+        {error && <p className="text-center text-red-500 mt-2">{error}</p>}
       </form>
     </div>
   );
