@@ -32,7 +32,10 @@ const Signin = () => {
       dispatch(signInSuccess(res.data));
       navigate('/');
     } catch (error) {
-      dispatch(signInFailure(error.response.data.message));
+      if (error.response.data.message) {
+        return dispatch(signInFailure(error.response.data.message));
+      }
+      dispatch(signInFailure('Something went wrong!'));
     }
   };
   const inputContainerStyle = 'flex flex-col h-[80px]';
@@ -80,7 +83,7 @@ const Signin = () => {
           disabled={loading}
           className="bg-primaryBlue mt-1 text-white px-8 font-semibold py-1 rounded-sm mx-auto block hover:bg-primaryBlueHover"
         >
-          {loading ? 'Loadin' : 'Sign In'}
+          {loading ? 'Loading' : 'Sign In'}
         </button>
       </form>
       {error && (
