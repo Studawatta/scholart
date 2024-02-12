@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import authRoute from './routes/auth.route.js';
 import teacherRoute from './routes/teacher.route.js';
+import studentRoute from './routes/student.route.js';
 
 const port = env.PORT;
 
@@ -24,6 +25,7 @@ app.use(cookieParser());
 
 app.use('/api/auth', authRoute);
 app.use('/api/teacher', teacherRoute);
+app.use('/api/student', studentRoute);
 
 //error handing middleware
 // eslint-disable-next-line no-unused-vars

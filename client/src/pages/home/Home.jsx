@@ -11,7 +11,7 @@ const Home = () => {
     (state) => state.form
   );
   return (
-    <div className="mt-16 py-8 lg:px-20 px-10  h-[calc(100vh-64px)]">
+    <div className="mt-16 pt-8 pb-16 lg:px-20 px-10  ">
       <Header />
       <div className="lg:mt-16 mt-8">
         <div className="flex">

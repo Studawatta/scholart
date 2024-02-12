@@ -63,8 +63,8 @@ const AddTeacher = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="border-2 w-3/4 mx-auto border-primaryBlue rounded-md mt-4 py-8 px-8"
       >
-        <div className="flex justify-between w-full ">
-          <div className="w-[45%] flex flex-col gap-4">
+        <div className="flex flex-col md:flex-row justify-between w-full ">
+          <div className="w-full md:w-[45%]  flex flex-col md:gap-4">
             <div className={inputContStyle}>
               <label
                 htmlFor="teacher_name"
@@ -106,7 +106,7 @@ const AddTeacher = () => {
             </div>
           </div>
 
-          <div className="w-[45%]">
+          <div className=" w-full md:w-[45%]">
             <div className={inputContStyle}>
               <label htmlFor="subject" className="font-serif text-slate-800">
                 Appointed Date:
