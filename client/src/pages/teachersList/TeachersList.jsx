@@ -51,10 +51,10 @@ const TeachersList = () => {
   return (
     <div className=" py-8 px-20">
       <Header />
-      <div className=" flex mt-8">
+      <div className=" flex flex-col md:flex-row mt-8 gap-5 md:gap-0">
         <div>
           <button
-            className={` w-48 py-1 px-2 rounded-lg flex items-center justify-between text-slate-600 font-semibold
+            className={` w-48 py-1 px-2 rounded-lg flex mx-auto items-center justify-between text-slate-600 font-semibold
                    cursor-pointer border-2 border-primaryBlue hover:bg-slate-200 select-none`}
             onClick={() => dispatch(setShowTeacherForm())}
           >
