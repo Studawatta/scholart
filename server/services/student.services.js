@@ -13,3 +13,36 @@ export const addStudent = (data, callBack) => {
     return callBack(null, results);
   });
 };
+
+export const getStudentsByUser = (userId, callBack) => {
+  const q = 'SELECT * FROM students WHERE user_id = ?';
+
+  db.query(q, [userId], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
+export const getStudentById = (id, callBack) => {
+  const q = 'SELECT * FROM students WHERE id = ?';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
+export const deleteStudent = (id, callBack) => {
+  const q = 'DELETE FROM students WHERE `id` = ?';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
