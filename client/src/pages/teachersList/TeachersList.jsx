@@ -35,12 +35,9 @@ const TeachersList = () => {
 
   const handleDelete = async (id) => {
     try {
-      const res = await axios.delete(
-        'http://localhost:8080/api/teacher/' + id,
-        {
-          withCredentials: true,
-        }
-      );
+      await axios.delete('http://localhost:8080/api/teacher/' + id, {
+        withCredentials: true,
+      });
       alert('Deleted!');
     } catch (error) {
       console.log(error);
@@ -70,33 +67,32 @@ const TeachersList = () => {
               {error ? (
                 <p className="text-center text-red-500">{error}</p>
               ) : teachers.length > 0 ? (
-                <div className=" h-full py-1 flex  flex-col items-center">
-                  <div className="w-[600px]  flex gap-1 pl-6 ">
-                    <h1 className="w-[250px] bg-primaryGreen text-white font-semibold rounded-md text-center select-none">
+                <div className=" h-full py-1 flex  flex-col">
+                  <div className="flex gap-1">
+                    <span className="w-6"></span>
+                    <span className="w-[250px] bg-[#006666] text-white font-semibold rounded-md text-center select-none">
                       Name
-                    </h1>
-                    <h1 className="w-[250px] bg-primaryGreen text-white font-semibold rounded-md text-center select-none">
+                    </span>
+                    <span className="w-[250px] bg-[#006666] text-white font-semibold rounded-md text-center select-none">
                       Subject
-                    </h1>
+                    </span>
                   </div>
                   <div className="mt-4 flex flex-col h-[445px] py-1 overflow-auto gap-2">
                     {teachers.map((teacher, index) => (
-                      <div key={index} className="w-[600px] flex">
+                      <div key={index} className=" flex gap-1">
                         <span className="font-semibold w-6">
                           {index < 9 ? '0' + (index + 1) : index + 1}.
                         </span>
-                        <div className="flex w-[500px] justify-between gap-1">
-                          <p className="w-[250px] bg-slate-600 text-white font-semibold rounded-md pl-8 cursor-pointer hover:underline">
-                            {teacher.name}
-                          </p>
-                          <p className="w-[250px] bg-slate-600 text-white font-semibold rounded-md pl-8">
-                            {teacher.subject}
-                          </p>
-                        </div>
+                        <span className="w-[250px] bg-slate-600 text-white font-semibold rounded-md pl-8 cursor-pointer hover:underline">
+                          {teacher.name}
+                        </span>
+                        <span className="w-[250px] bg-slate-600 text-white font-semibold rounded-md pl-8">
+                          {teacher.subject}
+                        </span>
 
                         <span
                           onClick={() => handleDelete(teacher.id)}
-                          className="font-semibold ml-4 text-red-600 cursor-pointer hover:underline select-none"
+                          className="font-semibold text-red-600 cursor-pointer hover:underline select-none ml-2"
                         >
                           Delete
                         </span>
