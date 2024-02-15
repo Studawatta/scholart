@@ -9,9 +9,14 @@ import StudentsList from './pages/studentsList/StudentsList';
 import TeachersList from './pages/teachersList/TeachersList';
 import ClassesList from './pages/classesList/ClassesList';
 import { useSelector } from 'react-redux';
+// import { useBeforeunload } from 'react-beforeunload';
 
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
+
+  // useBeforeunload(() => {
+  //   if (window) localStorage.clear();
+  // });
   const Layout = () => {
     return (
       <>
