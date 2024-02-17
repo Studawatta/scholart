@@ -54,7 +54,7 @@ export const signinController = (req, res, next) => {
 
       const token = jwt.sign({ id: results[0].id }, env.JWT_SECRET);
       res
-        .cookie('access_token', token, { httpOnly: true })
+        .cookie('access_token', token, { httpOnly: true, maxAge: 31536000 })
         .status(200)
         .json(rest);
     }

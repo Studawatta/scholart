@@ -2,15 +2,9 @@ import { IoMdClose } from 'react-icons/io';
 import { useDispatch } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { setShowTeacherForm } from '../../redux/form/formSlice';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import axios from 'axios';
-
-const schema = yup.object().shape({
-  subject: yup.string().notOneOf([''], 'You must select a subject!'),
-  name: yup.string().required('Required!'),
-});
+import { useMutation, useQueryClient } from 'react-query';
+import { makeRequest } from '../../axios';
 
 const AddTeacher = () => {
   const dispatch = useDispatch();
@@ -22,18 +16,23 @@ const AddTeacher = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
-    defaultValues: {
-      subject: '',
+  } = useForm();
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (newTeacher) => {
+      return makeRequest.post('/teacher', newTeacher);
     },
-    resolver: yupResolver(schema),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['teachers'] });
+    },
   });
-  const onSubmit = async (data) => {
+
+  const onSubmit = (data) => {
     try {
       setIsLoading(true);
-      await axios.post('http://localhost:8080/api/teacher', data, {
-        withCredentials: true,
-      });
+      mutation.mutate(data);
       setError('');
       setIsLoading(false);
       alert('Teacher added!');
@@ -47,6 +46,7 @@ const AddTeacher = () => {
   const inputContStyle = 'flex flex-col gap-1  h-[84px] ';
   const inputStyle =
     'border border-slate-400 rounded-md outline-none px-4 py-[2px]';
+
   return (
     <div className=" w-full h-full p-4">
       <div className=" flex items-center">
@@ -65,6 +65,8 @@ const AddTeacher = () => {
       >
         <div className="flex flex-col md:flex-row justify-between w-full ">
           <div className="w-full md:w-[45%]  flex flex-col md:gap-4">
+            {/*  */}
+            {/* NAME INPUT */}
             <div className={inputContStyle}>
               <label
                 htmlFor="teacher_name"
@@ -75,43 +77,54 @@ const AddTeacher = () => {
               <input
                 type="text"
                 id="teacher_name"
-                {...register('name')}
+                {...register('name', {
+                  required: true,
+                })}
                 className={inputStyle}
               />
               <div className="text-sm text-red-500">
-                {errors.name && <p>{errors.name.message}</p>}
+                {errors?.name?.type === 'required' && <p>*Required</p>}
               </div>
             </div>
 
+            {/* SUBJECT INPUT */}
             <div className={inputContStyle}>
               <label htmlFor="subject" className="font-serif text-slate-800">
                 Subject:
               </label>
-              <select
-                name="subject"
+              <input
+                type="text"
                 id="subject"
-                {...register('subject')}
+                {...register('subject', {
+                  required: true,
+                })}
                 className={inputStyle}
-              >
-                <option value="" disabled>
-                  Select a subject
-                </option>
-                <option value="maths">Maths</option>
-                <option value="science">Science</option>
-                <option value="history">History</option>
-              </select>
+              />
               <div className=" text-sm text-red-500 ">
-                {errors.subject && <p>{errors.subject.message}</p>}
+                {errors?.subject?.type === 'required' && <p>*Required</p>}
               </div>
             </div>
           </div>
 
           <div className=" w-full md:w-[45%]">
+            {/* APPOINTED DATE INPUT */}
             <div className={inputContStyle}>
               <label htmlFor="subject" className="font-serif text-slate-800">
                 Appointed Date:
               </label>
-              <input type="date" id="subject" className={inputStyle} />
+              <input
+                type="date"
+                id="appointed_date"
+                {...register('appointed_date', {
+                  required: true,
+                })}
+                className={inputStyle}
+              />
+              <div className=" text-sm text-red-500 ">
+                {errors?.appointed_date?.type === 'required' && (
+                  <p>*Required</p>
+                )}
+              </div>
             </div>
           </div>
         </div>
