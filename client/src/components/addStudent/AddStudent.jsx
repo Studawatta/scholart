@@ -1,11 +1,12 @@
 import { IoMdClose } from 'react-icons/io';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useForm } from 'react-hook-form';
 import { setShowStudentForm } from '../../redux/form/formSlice';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { useState } from 'react';
-import axios from 'axios';
+import { useMutation, useQueryClient, useQuery } from 'react-query';
+import { makeRequest } from '../../axios';
 
 const schema = yup.object().shape({
   class: yup.string().notOneOf([''], 'You must select a class!'),
@@ -14,9 +15,20 @@ const schema = yup.object().shape({
 });
 
 const AddStudent = () => {
+  const { currentUser } = useSelector((state) => state.user);
+
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
+
+  //Fetching classes
+  const { data: classes, isLoading } = useQuery({
+    queryKey: ['classes'],
+    queryFn: async () =>
+      await makeRequest.get(`/class/${currentUser.id}`).then((res) => {
+        return res.data;
+      }),
+  });
 
   const {
     register,
@@ -29,19 +41,27 @@ const AddStudent = () => {
     },
     resolver: yupResolver(schema),
   });
+
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (newStudent) => {
+      return makeRequest.post('/student', newStudent);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] });
+    },
+  });
   const onSubmit = async (data) => {
-    console.log(data);
     try {
-      setIsLoading(true);
-      await axios.post('http://localhost:8080/api/student', data, {
-        withCredentials: true,
-      });
+      setIsPending(true);
+      mutation.mutate(data);
       setError('');
-      setIsLoading(false);
+      setIsPending(false);
       alert('Student added!');
       reset();
     } catch (error) {
-      setIsLoading(false);
+      setIsPending(false);
       setError(error.message);
     }
   };
@@ -61,109 +81,120 @@ const AddStudent = () => {
         />
       </div>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="border-2 w-3/4 mx-auto border-primaryBlue rounded-md mt-4 py-8 px-8"
-      >
-        <div className="flex flex-col md:flex-row justify-between w-full ">
-          <div className="md:w-[45%] flex flex-col md:gap-4">
-            <div className={inputContStyle}>
-              <label
-                htmlFor="student_name"
-                className="font-serif text-slate-800"
-              >
-                Name:
-              </label>
-              <input
-                type="text"
-                id="student_name"
-                {...register('name')}
-                className={inputStyle}
-              />
-              <div className="text-sm text-red-500">
-                {errors.name && <p>{errors.name.message}</p>}
-              </div>
-            </div>
-
-            <div className={inputContStyle}>
-              <label htmlFor="class" className="font-serif text-slate-800">
-                Class:
-              </label>
-              <select
-                name="class"
-                id="class"
-                {...register('class')}
-                className={inputStyle}
-              >
-                <option value="" disabled>
-                  Select a class
-                </option>
-                <option value="A">Class A</option>
-                <option value="B">Class B</option>
-                <option value="C">Class C</option>
-              </select>
-              <div className=" text-sm text-red-500 ">
-                {errors.subject && <p>{errors.subject.message}</p>}
-              </div>
-            </div>
-          </div>
-
-          <div className="md:w-[45%] flex flex-col gap-4">
-            <div className={inputContStyle}>
-              <label htmlFor="age" className="font-serif text-slate-800">
-                Age:
-              </label>
-              <input
-                type="text"
-                id="age"
-                {...register('age')}
-                className={inputStyle}
-              />
-              <div className="text-sm text-red-500">
-                {errors.age && <p>{errors.age.message}</p>}
-              </div>
-            </div>
-            <div className={inputContStyle}>
-              <p className="font-serif text-slate-800">Gender:</p>
-              <div className="flex gap-4">
-                <div className="flex gap-2">
-                  <input
-                    type="radio"
-                    id="male"
-                    name="gender"
-                    defaultChecked
-                    value={'male'}
-                    {...register('gender')}
-                  />
-
-                  <label htmlFor="male" className="font-serif text-slate-800">
-                    Male
-                  </label>
-                </div>
-                <div className="flex gap-2">
-                  <input
-                    type="radio"
-                    id="female"
-                    name="gender"
-                    value={'female'}
-                    {...register('gender')}
-                  />
-                  <label htmlFor="female" className="font-serif text-slate-800">
-                    Female
-                  </label>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button
-          disabled={isLoading}
-          className="w-1/2 bg-primaryBlue py-[2px] rounded-md font-semibold text-white mx-auto block mt-6 hover:bg-primaryBlueHover"
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : classes.length === 0 ? (
+        <p className="text-3xl font-semibold text-center mt-10 text-slate-500">
+          Please add classes before create classes !
+        </p>
+      ) : (
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="border-2 w-3/4 mx-auto border-primaryBlue rounded-md mt-4 py-8 px-8"
         >
-          {isLoading ? 'Loading' : 'Submit'}
-        </button>
-        {error && <p className="text-center text-red-500 mt-2">{error}</p>}
-      </form>
+          <div className="flex flex-col md:flex-row justify-between w-full ">
+            <div className="md:w-[45%] flex flex-col md:gap-4">
+              <div className={inputContStyle}>
+                <label
+                  htmlFor="student_name"
+                  className="font-serif text-slate-800"
+                >
+                  Name:
+                </label>
+                <input
+                  type="text"
+                  id="student_name"
+                  {...register('name')}
+                  className={inputStyle}
+                />
+                <div className="text-sm text-red-500">
+                  {errors.name && <p>{errors.name.message}</p>}
+                </div>
+              </div>
+
+              <div className={inputContStyle}>
+                <label htmlFor="class" className="font-serif text-slate-800">
+                  Class:
+                </label>
+                <select
+                  name="class"
+                  id="class"
+                  {...register('class')}
+                  className={inputStyle}
+                >
+                  <option value="" disabled>
+                    Select a class
+                  </option>
+                  {classes.map((item) => (
+                    <option value={item.name}>{item.name}</option>
+                  ))}
+                </select>
+                <div className=" text-sm text-red-500 ">
+                  {errors.class && <p>{errors.class.message}</p>}
+                </div>
+              </div>
+            </div>
+
+            <div className="md:w-[45%] flex flex-col gap-4">
+              <div className={inputContStyle}>
+                <label htmlFor="age" className="font-serif text-slate-800">
+                  Age:
+                </label>
+                <input
+                  type="text"
+                  id="age"
+                  {...register('age')}
+                  className={inputStyle}
+                />
+                <div className="text-sm text-red-500">
+                  {errors.age && <p>{errors.age.message}</p>}
+                </div>
+              </div>
+              <div className={inputContStyle}>
+                <p className="font-serif text-slate-800">Gender:</p>
+                <div className="flex gap-4">
+                  <div className="flex gap-2">
+                    <input
+                      type="radio"
+                      id="male"
+                      name="gender"
+                      defaultChecked
+                      value={'male'}
+                      {...register('gender')}
+                    />
+
+                    <label htmlFor="male" className="font-serif text-slate-800">
+                      Male
+                    </label>
+                  </div>
+                  <div className="flex gap-2">
+                    <input
+                      type="radio"
+                      id="female"
+                      name="gender"
+                      value={'female'}
+                      {...register('gender')}
+                    />
+                    <label
+                      htmlFor="female"
+                      className="font-serif text-slate-800"
+                    >
+                      Female
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button
+            disabled={isPending}
+            className="w-1/2 bg-primaryBlue py-[2px] rounded-md font-semibold text-white mx-auto block mt-6 hover:bg-primaryBlueHover"
+          >
+            {isPending ? 'Loading' : 'Submit'}
+          </button>
+          {error && <p className="text-center text-red-500 mt-2">{error}</p>}
+        </form>
+      )}
     </div>
   );
 };

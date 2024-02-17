@@ -9,14 +9,12 @@ import StudentsList from './pages/studentsList/StudentsList';
 import TeachersList from './pages/teachersList/TeachersList';
 import ClassesList from './pages/classesList/ClassesList';
 import { useSelector } from 'react-redux';
-// import { useBeforeunload } from 'react-beforeunload';
-
+import { QueryClient, QueryClientProvider } from 'react-query';
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
 
-  // useBeforeunload(() => {
-  //   if (window) localStorage.clear();
-  // });
+  const queryClient = new QueryClient();
+
   const Layout = () => {
     return (
       <>
@@ -28,18 +26,20 @@ const App = () => {
   };
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route element={<Layout />}>
-          <Route path="/" element={currentUser ? <Home /> : <Landing />} />
-          <Route path="/signin" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
-        </Route>
-        <Route path="/students" element={<StudentsList />} />
-        <Route path="/teachers" element={<TeachersList />} />
-        <Route path="/classes" element={<ClassesList />} />
-      </Routes>
-    </BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={currentUser ? <Home /> : <Landing />} />
+            <Route path="/signin" element={<Signin />} />
+            <Route path="/signup" element={<Signup />} />
+          </Route>
+          <Route path="/students" element={<StudentsList />} />
+          <Route path="/teachers" element={<TeachersList />} />
+          <Route path="/classes" element={<ClassesList />} />
+        </Routes>
+      </BrowserRouter>
+    </QueryClientProvider>
   );
 };
 

@@ -1,44 +1,43 @@
-import Header from '../../components/homeHeader/Header';
+import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa6';
+import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeRequest } from '../../axios';
 import AddStudent from '../../components/addStudent/AddStudent';
-import axios from 'axios';
-
+import Header from '../../components/homeHeader/Header';
 import { setShowStudentForm } from '../../redux/form/formSlice';
-import { useEffect, useState } from 'react';
 
 const StudentsList = () => {
   const dispatch = useDispatch();
 
   const { showStudentForm } = useSelector((state) => state.form);
   const { currentUser } = useSelector((state) => state.user);
-  const [students, setStudents] = useState([]);
-  const [error, setError] = useState('');
+  // const [students, setStudents] = useState([]);
+  // const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (showStudentForm) {
+      dispatch(setShowStudentForm());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   //Fetching Data
-  useEffect(() => {
-    try {
-      const fetchStudents = async () => {
-        const res = await axios.get(
-          `http://localhost:8080/api/student/${currentUser.id}`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        setStudents(res.data);
-      };
-      fetchStudents();
-    } catch (error) {
-      setError('Something went wrong!');
-    }
-  }, [currentUser.id, students]);
+  const {
+    data: students,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['students'],
+    queryFn: async () =>
+      await makeRequest.get(`/student/${currentUser.id}`).then((res) => {
+        return res.data;
+      }),
+  });
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete('http://localhost:8080/api/student/' + id, {
-        withCredentials: true,
-      });
+      await makeRequest.delete(`/student/${id}`);
       alert('Deleted!');
     } catch (error) {
       console.log(error);
@@ -67,6 +66,8 @@ const StudentsList = () => {
             <div>
               {error ? (
                 <p className="text-center text-red-500">{error}</p>
+              ) : isLoading ? (
+                <p className="text-center text-slate-700">Loading...</p>
               ) : students.length > 0 ? (
                 <div className=" h-full py-1 flex  flex-col">
                   <div className="flex gap-1">

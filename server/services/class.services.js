@@ -13,3 +13,37 @@ export const addClass = (data, callBack) => {
     return callBack(null, results);
   });
 };
+
+export const getClassesByUser = (userId, callBack) => {
+  const q = 'SELECT * FROM classes WHERE user_id = ?';
+
+  db.query(q, [userId], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
+export const getClassById = (id, callBack) => {
+  const q = 'SELECT * FROM classes WHERE id = ?';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+
+    return callBack(null, results);
+  });
+};
+
+export const deleteClass = (id, callBack) => {
+  const q = 'DELETE FROM classes WHERE `id` = ?';
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+
+    return callBack(null, results);
+  });
+};

@@ -1,41 +1,32 @@
 import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdClose } from 'react-icons/io';
 import { useDispatch, useSelector } from 'react-redux';
 import useOutSideClickFrom from '../../hooks/useOutSideClick';
 import { setShowClassForm } from '../../redux/form/formSlice';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+import { makeRequest } from '../../axios';
 
 const AddClass = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const dispatch = useDispatch();
 
-  const [isLoading, setIsLoading] = useState(false);
+  const dispatch = useDispatch();
+  const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
   const [showDropDown, setShowDropDown] = useState(false);
   const [incharge, setIncharge] = useState('');
-  const [teachers, setTeachers] = useState([]);
 
   const dropDownRef = useRef();
 
   //Fetching teachers
-  useEffect(() => {
-    try {
-      const fetchTeachers = async () => {
-        const res = await axios.get(
-          `http://localhost:8080/api/teacher/${currentUser.id}`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        setTeachers(res.data);
-      };
-      fetchTeachers();
-    } catch (error) {
-      setError('Something went wrong!');
-    }
-  }, [currentUser.id, teachers]);
+  const { data: teachers, isLoading } = useQuery({
+    queryKey: ['teachers'],
+    queryFn: async () =>
+      await makeRequest.get(`/teacher/${currentUser.id}`).then((res) => {
+        return res.data;
+      }),
+  });
 
   const {
     register,
@@ -44,19 +35,28 @@ const AddClass = () => {
     formState: { errors },
   } = useForm();
 
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (newClass) => {
+      return makeRequest.post('/class', newClass);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['classes'] });
+    },
+  });
+
   const onSubmit = async (data) => {
     try {
-      setIsLoading(true);
-      await axios.post('http://localhost:8080/api/class', data, {
-        withCredentials: true,
-      });
+      setIsPending(true);
+      mutation.mutate(data);
       setError('');
-      setIsLoading(false);
+      setIsPending(false);
       alert('Class added!');
       reset();
       setIncharge('');
     } catch (error) {
-      setIsLoading(false);
+      setIsPending(false);
       setError(error.message);
     }
   };
@@ -78,7 +78,9 @@ const AddClass = () => {
           onClick={() => dispatch(setShowClassForm())}
         />
       </div>
-      {teachers.length === 0 ? (
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : teachers.length === 0 ? (
         <p className="text-3xl font-semibold text-center mt-10 text-slate-500">
           Please add teachers before create classes !
         </p>
@@ -164,10 +166,10 @@ const AddClass = () => {
             </div>
           </div>
           <button
-            disabled={isLoading}
+            disabled={isPending}
             className="w-1/2 bg-primaryBlue py-[2px] rounded-md font-semibold text-white mx-auto block mt-6 hover:bg-primaryBlueHover"
           >
-            {isLoading ? 'Loading' : 'Submit'}
+            {isPending ? 'Loading' : 'Submit'}
           </button>
           {error && <p className="text-center text-red-500 mt-2">{error}</p>}
         </form>

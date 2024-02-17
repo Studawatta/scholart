@@ -1,43 +1,40 @@
-import Header from '../../components/homeHeader/Header';
+import { useEffect } from 'react';
 import { FaPlus } from 'react-icons/fa6';
+import { useQuery } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeRequest } from '../../axios';
 import AddTeacher from '../../components/addTeacher/AddTeacher';
-import axios from 'axios';
-
+import Header from '../../components/homeHeader/Header';
 import { setShowTeacherForm } from '../../redux/form/formSlice';
-import { useEffect, useState } from 'react';
+
 const TeachersList = () => {
   const dispatch = useDispatch();
 
   const { showTeacherForm } = useSelector((state) => state.form);
   const { currentUser } = useSelector((state) => state.user);
-  const [teachers, setTeachers] = useState([]);
-  const [error, setError] = useState('');
 
-  //Fetching Data
   useEffect(() => {
-    try {
-      const fetchTeachers = async () => {
-        const res = await axios.get(
-          `http://localhost:8080/api/teacher/${currentUser.id}`,
-          {
-            withCredentials: true,
-          }
-        );
-
-        setTeachers(res.data);
-      };
-      fetchTeachers();
-    } catch (error) {
-      setError('Something went wrong!');
+    if (showTeacherForm) {
+      dispatch(setShowTeacherForm());
     }
-  }, [currentUser.id, teachers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const {
+    data: teachers,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['teachers'],
+    queryFn: async () =>
+      await makeRequest.get(`/teacher/${currentUser.id}`).then((res) => {
+        return res.data;
+      }),
+  });
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete('http://localhost:8080/api/teacher/' + id, {
-        withCredentials: true,
-      });
+      await makeRequest.delete(`/teacher/${id}`);
       alert('Deleted!');
     } catch (error) {
       console.log(error);
@@ -66,6 +63,8 @@ const TeachersList = () => {
             <div>
               {error ? (
                 <p className="text-center text-red-500">{error}</p>
+              ) : isLoading ? (
+                <p className="text-center text-slate-700">Loading...</p>
               ) : teachers.length > 0 ? (
                 <div className=" h-full py-1 flex  flex-col">
                   <div className="flex gap-1">
