@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -9,7 +9,7 @@ const Header = () => {
     'cursor-pointer hover:underline bg-primaryBlue lg:bg-transparent w-full lg:w-fit md:w-3/5 text-center rounded-md';
   return (
     <div>
-      <h1 className=" text-2xl select-none mb-5  lg:mb-10 md:text-4xl text-center underline font-semibold italic">
+      <h1 className=" mb-5 select-none text-center  text-2xl font-semibold italic underline md:text-4xl lg:mb-10">
         {currentUser ? (
           currentUser.school_name
             .split(' ')
@@ -23,8 +23,8 @@ const Header = () => {
         )}
       </h1>
       <div
-        className={`bg-white justify-center text-white font-semibold gap-2 py-[2px] px-10 flex lg:text-lg
-                     rounded-md flex-col lg:flex-row lg:bg-primaryBlue lg:gap-32 items-center`}
+        className={` lg:bg-primaryBlue flex flex-col items-center justify-center gap-2 rounded-md bg-white px-10
+                     py-[2px] font-semibold text-white lg:flex-row lg:gap-32 lg:text-lg`}
       >
         <Link to={'/'} className={headerButtonStyle}>
           <button>Home</button>
