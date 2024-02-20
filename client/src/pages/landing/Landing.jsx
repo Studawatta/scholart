@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
-import logo from '../../assets/logo.png';
 import Landing_Background from '../../assets/Landing_Background.mp4';
+import logo from '../../assets/logo.png';
 
 const Landing = () => {
   useEffect(() => {
@@ -15,14 +15,14 @@ const Landing = () => {
           loop
           muted
           type="video/mp4"
-          className=" min-w-full h-screen object-cover"
+          className=" h-screen min-w-full object-cover"
         />
-        <div className=" absolute bottom-[25%] left-0 right-0 flex flex-col items-center mx-auto select-none">
-          <h1 className="w-fit text-4xl md:text-6xl text-center font-medium text-white drop-shadow-[0_5px_2px_black]">
+        <div className=" absolute bottom-[25%] left-0 right-0 mx-auto flex select-none flex-col items-center">
+          <h1 className="w-fit text-center text-4xl font-medium text-white drop-shadow-[0_5px_2px_black] md:text-6xl">
             Free Online School
             <br /> Management Software
           </h1>
-          <p className=" text-center mt-10 text-xl md:text-2xl text-white ">
+          <p className=" mt-10 text-center text-xl text-white md:text-2xl ">
             <span className="drop-shadow-[0_1px_2px_black]">
               Now you can manage your school, college, or any educational center
               with
@@ -31,7 +31,7 @@ const Landing = () => {
             <img
               src={logo}
               alt="scholart_logo"
-              className="w-40 mx-auto my-5 "
+              className="mx-auto my-5 w-40 "
             />{' '}
             <span className="drop-shadow-[0_1px_2px_black]">
               It's 100% free for a lifetime with no limitations.

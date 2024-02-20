@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { useForm } from 'react-hook-form';
 import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import {
+  signInFailure,
   signInStart,
   signInSuccess,
-  signInFailure,
 } from '../../redux/user/userSlice';
 
 const Signin = () => {
@@ -42,11 +42,11 @@ const Signin = () => {
   const inputStyle =
     'border border-slate-500 rounded-sm mt-1 px-4 py-[2px] w-[250px] focus:outline-none';
   return (
-    <div className="h-screen bg-slate-100 flex flex-col justify-center items-center gap-10">
+    <div className="flex h-screen flex-col items-center justify-center gap-10 bg-slate-100">
       <h1 className="text-3xl font-semibold">Sign In</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border border-black p-6 rounded-sm"
+        className="rounded-sm border border-black p-6"
       >
         <div className={inputContainerStyle}>
           <label htmlFor="email">Email</label>
@@ -81,7 +81,7 @@ const Signin = () => {
         <button
           type="submit"
           disabled={loading}
-          className="bg-primaryBlue mt-1 text-white px-8 font-semibold py-1 rounded-sm mx-auto block hover:bg-primaryBlueHover"
+          className="bg-primaryBlue hover:bg-primaryBlueHover mx-auto mt-1 block rounded-sm px-8 py-1 font-semibold text-white"
         >
           {loading ? 'Loading' : 'Sign In'}
         </button>

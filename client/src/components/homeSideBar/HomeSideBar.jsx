@@ -15,8 +15,8 @@ const AddButton = ({ text }) => {
 
   return (
     <div
-      className={` w-48 py-1 px-2 rounded-lg flex items-center justify-between text-slate-600 font-semibold
-                   cursor-pointer border-2 border-primaryBlue hover:bg-slate-200 select-none`}
+      className={` border-primaryBlue flex w-48 cursor-pointer select-none items-center justify-between rounded-lg border-2
+                   px-2 py-1 font-semibold text-slate-600 hover:bg-slate-200`}
       onClick={() => {
         if (text === 'Add Teacher') {
           if (showStudentForm) {
@@ -51,8 +51,8 @@ const AddButton = ({ text }) => {
 const HomeSideBar = () => {
   return (
     <div
-      className={`shadow-[0px_0px_5px_#000] hidden items-center rounded-md w-full md:w-60 lg:flex flex-col 
-                  gap-4 py-4 h-fit`}
+      className={`hidden h-fit w-full flex-col items-center gap-4 rounded-md py-4 
+                  shadow-[0px_0px_5px_#000] md:w-60 lg:flex`}
     >
       <AddButton text="Add Teacher" />
       <AddButton text="Add Class" />

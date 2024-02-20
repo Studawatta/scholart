@@ -1,10 +1,10 @@
-import { IoMdClose } from 'react-icons/io';
-import { useDispatch } from 'react-redux';
-import { useForm } from 'react-hook-form';
-import { setShowTeacherForm } from '../../redux/form/formSlice';
 import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { IoMdClose } from 'react-icons/io';
 import { useMutation, useQueryClient } from 'react-query';
+import { useDispatch } from 'react-redux';
 import { makeRequest } from '../../axios';
+import { setShowTeacherForm } from '../../redux/form/formSlice';
 
 const AddTeacher = () => {
   const dispatch = useDispatch();
@@ -48,23 +48,23 @@ const AddTeacher = () => {
     'border border-slate-400 rounded-md outline-none px-4 py-[2px]';
 
   return (
-    <div className=" w-full h-full p-4">
+    <div className=" h-full w-full p-4">
       <div className=" flex items-center">
-        <h1 className="text-2xl font-semibold mx-auto w-fit">Add Teacher</h1>
+        <h1 className="mx-auto w-fit text-2xl font-semibold">Add Teacher</h1>
 
         <IoMdClose
           data-testid="closeBtn"
-          className="text-4xl cursor-pointer hover:text-red-700"
+          className="cursor-pointer text-4xl hover:text-red-700"
           onClick={() => dispatch(setShowTeacherForm())}
         />
       </div>
 
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border-2 w-3/4 mx-auto border-primaryBlue rounded-md mt-4 py-8 px-8"
+        className="border-primaryBlue mx-auto mt-4 w-3/4 rounded-md border-2 px-8 py-8"
       >
-        <div className="flex flex-col md:flex-row justify-between w-full ">
-          <div className="w-full md:w-[45%]  flex flex-col md:gap-4">
+        <div className="flex w-full flex-col justify-between md:flex-row ">
+          <div className="flex w-full  flex-col md:w-[45%] md:gap-4">
             {/*  */}
             {/* NAME INPUT */}
             <div className={inputContStyle}>
@@ -130,11 +130,11 @@ const AddTeacher = () => {
         </div>
         <button
           disabled={isLoading}
-          className="w-1/2 bg-primaryBlue py-[2px] rounded-md font-semibold text-white mx-auto block mt-6 hover:bg-primaryBlueHover"
+          className="bg-primaryBlue hover:bg-primaryBlueHover mx-auto mt-6 block w-1/2 rounded-md py-[2px] font-semibold text-white"
         >
           {isLoading ? 'Loading' : 'Submit'}
         </button>
-        {error && <p className="text-center text-red-500 mt-2">{error}</p>}
+        {error && <p className="mt-2 text-center text-red-500">{error}</p>}
       </form>
     </div>
   );

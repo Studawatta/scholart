@@ -1,12 +1,11 @@
-import axios from 'axios';
 import { useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { IoMdClose } from 'react-icons/io';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
+import { makeRequest } from '../../axios';
 import useOutSideClickFrom from '../../hooks/useOutSideClick';
 import { setShowClassForm } from '../../redux/form/formSlice';
-import { useQuery, useMutation, useQueryClient } from 'react-query';
-import { makeRequest } from '../../axios';
 
 const AddClass = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -68,28 +67,28 @@ const AddClass = () => {
     'border border-slate-400 rounded-md outline-none w-full px-4 py-[2px]';
 
   return (
-    <div className=" w-full h-full p-4">
+    <div className=" h-full w-full p-4">
       <div className=" flex items-center">
-        <h1 className="text-2xl font-semibold mx-auto w-fit">Add Class</h1>
+        <h1 className="mx-auto w-fit text-2xl font-semibold">Add Class</h1>
 
         <IoMdClose
           data-testid="closeBtn"
-          className="text-4xl cursor-pointer hover:text-red-700"
+          className="cursor-pointer text-4xl hover:text-red-700"
           onClick={() => dispatch(setShowClassForm())}
         />
       </div>
       {isLoading ? (
         <p>Loading...</p>
       ) : teachers.length === 0 ? (
-        <p className="text-3xl font-semibold text-center mt-10 text-slate-500">
-          Please add teachers before create classes !
+        <p className="mt-10 text-center text-3xl font-semibold text-slate-500">
+          Please add at least one teacher before create classes !
         </p>
       ) : (
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className="border-2 w-3/4 mx-auto border-primaryBlue rounded-md mt-4 py-8 px-8"
+          className="border-primaryBlue mx-auto mt-4 w-3/4 rounded-md border-2 px-8 py-8"
         >
-          <div className="flex flex-col items-center w-full ">
+          <div className="flex w-full flex-col items-center ">
             {/*  */}
             {/* NAME INPUT */}
             <div className={inputContStyle}>
@@ -120,7 +119,7 @@ const AddClass = () => {
                   <span className=" text-sm text-red-500 ">*Required</span>
                 )}
               </label>
-              <div className=" border flex items-center justify-between border-slate-400 rounded-md outline-none w-full px-4 py-[2px] bg-white">
+              <div className=" flex w-full items-center justify-between rounded-md border border-slate-400 bg-white px-4 py-[2px] outline-none">
                 <input
                   type="text"
                   id="incharge_teacher"
@@ -132,7 +131,7 @@ const AddClass = () => {
                 />
                 {incharge !== '' ? (
                   <IoMdClose
-                    className=" cursor-pointer rounded-full bg-slate-300 text-xs p-[2px] text-white"
+                    className=" cursor-pointer rounded-full bg-slate-300 p-[2px] text-xs text-white"
                     onClick={() => setIncharge('')}
                   />
                 ) : (
@@ -142,7 +141,7 @@ const AddClass = () => {
 
               {/* TEACHER'S NAMES DROPDOWN */}
               {showDropDown && (
-                <div className="bg-white border flex flex-col border-slate-400 py-1 overflow-auto rounded-md font-semibold text-slate-700 gap-2 absolute top-[64px] bottom-0 w-full max-h-32 h-fit">
+                <div className="absolute bottom-0 top-[64px] flex h-fit max-h-32 w-full flex-col gap-2 overflow-auto rounded-md border border-slate-400 bg-white py-1 font-semibold text-slate-700">
                   {teachers
                     .filter((teacher) =>
                       teacher.name
@@ -151,14 +150,14 @@ const AddClass = () => {
                     )
                     .map((teacher, index) => (
                       <span
-                        className=" hover:bg-slate-200 pl-4 cursor-pointer "
+                        className=" cursor-pointer pl-4 hover:bg-slate-200 "
                         key={index}
                         onClick={() => {
                           setIncharge(teacher.name);
                           setShowDropDown(false);
                         }}
                       >
-                        {teacher.name}
+                        {teacher.name} ({teacher.subject})
                       </span>
                     ))}
                 </div>
@@ -167,11 +166,11 @@ const AddClass = () => {
           </div>
           <button
             disabled={isPending}
-            className="w-1/2 bg-primaryBlue py-[2px] rounded-md font-semibold text-white mx-auto block mt-6 hover:bg-primaryBlueHover"
+            className="bg-primaryBlue hover:bg-primaryBlueHover mx-auto mt-6 block w-1/2 rounded-md py-[2px] font-semibold text-white"
           >
             {isPending ? 'Loading' : 'Submit'}
           </button>
-          {error && <p className="text-center text-red-500 mt-2">{error}</p>}
+          {error && <p className="mt-2 text-center text-red-500">{error}</p>}
         </form>
       )}
     </div>

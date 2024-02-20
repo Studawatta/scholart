@@ -1,22 +1,22 @@
 import { useSelector } from 'react-redux';
-import HomeSideBar from '../../components/homeSideBar/HomeSideBar';
-import Header from '../../components/homeHeader/Header';
 import logo from '../../assets/logo.png';
-import AddTeacher from '../../components/addTeacher/AddTeacher';
 import AddClass from '../../components/addClass/AddClass';
 import AddStudent from '../../components/addStudent/AddStudent';
+import AddTeacher from '../../components/addTeacher/AddTeacher';
+import Header from '../../components/homeHeader/Header';
+import HomeSideBar from '../../components/homeSideBar/HomeSideBar';
 
 const Home = () => {
   const { showStudentForm, showTeacherForm, showClassForm } = useSelector(
     (state) => state.form
   );
   return (
-    <div className="mt-16 pt-8 pb-16 lg:px-20 px-10  ">
+    <div className="mt-16 px-10 pb-16 pt-8 lg:px-20  ">
       <Header />
-      <div className="lg:mt-16 mt-8">
+      <div className="mt-8 lg:mt-16">
         <div className="flex">
           <HomeSideBar />
-          <div className="flex-1 lg:ml-10 bg-slate-200 rounded-md  items-center justify-center lg:h-[400px] py-10 lg:py-0 flex overflow-hidden">
+          <div className="flex flex-1 items-center justify-center  overflow-hidden rounded-md bg-slate-200 py-10 lg:ml-10 lg:h-[400px] lg:py-0">
             {showClassForm ? (
               <AddClass />
             ) : showTeacherForm ? (
@@ -25,7 +25,7 @@ const Home = () => {
               <AddStudent />
             ) : (
               <div>
-                <p className=" text-center font-semibold text-slate-700  text-xl md:text-2xl ">
+                <p className=" text-center text-xl font-semibold  text-slate-700 md:text-2xl ">
                   <span>
                     Now you can manage your school, college, or any educational
                     center with
@@ -34,7 +34,7 @@ const Home = () => {
                   <img
                     src={logo}
                     alt="scholart_logo"
-                    className="w-40 mx-auto my-5 "
+                    className="mx-auto my-5 w-40 "
                   />{' '}
                   <span>
                     It's 100% free for a lifetime with no limitations.

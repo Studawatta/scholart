@@ -1,7 +1,7 @@
+import axios from 'axios';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -30,11 +30,11 @@ const Signup = () => {
   const inputStyle =
     'border border-slate-500 rounded-sm mt-1 px-4 py-[2px] w-[250px] focus:outline-none';
   return (
-    <div className="h-screen bg-slate-100 flex flex-col justify-center items-center gap-10">
+    <div className="flex h-screen flex-col items-center justify-center gap-10 bg-slate-100">
       <h1 className="text-3xl font-semibold">Sign Up</h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="border border-black p-6 rounded-sm"
+        className="rounded-sm border border-black p-6"
       >
         <div className={inputContainerStyle}>
           <label htmlFor="username">Username</label>
@@ -128,7 +128,7 @@ const Signup = () => {
         <button
           type="submit"
           disabled={isLoading}
-          className="bg-primaryBlue mt-1 text-white px-8 font-semibold py-1 rounded-sm mx-auto block hover:bg-primaryBlueHover"
+          className="bg-primaryBlue hover:bg-primaryBlueHover mx-auto mt-1 block rounded-sm px-8 py-1 font-semibold text-white"
         >
           Sign Up
         </button>

@@ -1,14 +1,14 @@
-import logo from '../../assets/logo.png';
-import { AiOutlineLogin, AiOutlineUserAdd } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { AiOutlineLogin, AiOutlineUserAdd } from 'react-icons/ai';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 import {
+  signOutFailure,
   signOutStart,
   signOutSuccess,
-  signOutFailure,
 } from '../../redux/user/userSlice';
-import axios from 'axios';
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -48,7 +48,7 @@ const Navbar = () => {
     'flex gap-2 items-center justify-center  h-9 sm:h-11 w-20 xs:w-24 sm:w-32 rounded-[20px] xs:rounded-full cursor-pointer duration-500 select-none ';
   return (
     <div
-      className={`fixed top-0 z-50  h-16 sm:h-[72px] w-full px-5 sm:px-16 lg:px-[16%] flex justify-between items-center  ${
+      className={`fixed top-0 z-50  flex h-16 w-full items-center justify-between px-5 sm:h-[72px] sm:px-16 lg:px-[16%]  ${
         isScrolled ? 'bg-black/50 backdrop-blur-[5px]' : ''
       } `}
     >
@@ -59,7 +59,7 @@ const Navbar = () => {
           <img
             src={logo}
             alt="scholart_logo"
-            className=" h-12 sm:h-14 cursor-pointer"
+            className=" h-12 cursor-pointer sm:h-14"
           />
         </Link>
       </div>
@@ -69,7 +69,7 @@ const Navbar = () => {
         {currentUser ? (
           <div
             onClick={handleSignOut}
-            className={`${buttonStyle} text-red-600 bg-white hover:bg-slate-300 `}
+            className={`${buttonStyle} bg-white text-red-600 hover:bg-slate-300 `}
           >
             <AiOutlineLogin className="hidden  sm:block" />
             <button>Sign Out</button>

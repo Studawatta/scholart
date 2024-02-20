@@ -42,55 +42,59 @@ const ClassesList = () => {
   };
 
   return (
-    <div className=" py-8 px-20">
+    <div className=" px-4 py-8 lg:px-20">
       <Header />
-      <div className=" flex flex-col md:flex-row mt-8 gap-5 md:gap-0">
-        <div>
+      <div className=" mt-8 flex flex-col gap-5 text-sm md:text-base lg:flex-row lg:gap-0 ">
+        <div className="flex flex-col gap-5 lg:gap-10 ">
           <button
-            className={` w-48 py-1 px-2 rounded-lg flex mx-auto items-center justify-between text-slate-600 font-semibold
-                   cursor-pointer border-2 border-primaryBlue hover:bg-slate-200 select-none`}
+            className={`border-primaryBlue mx-auto flex w-36 cursor-pointer  select-none items-center justify-between rounded-lg border-2 px-2 py-[2px]
+                   font-semibold text-slate-600 hover:bg-slate-200 lg:w-48 lg:py-1`}
             onClick={() => dispatch(setShowClassForm())}
           >
             <span>Add Class</span>
             <FaPlus />
           </button>
         </div>
-        <div className="flex-1 lg:ml-10 bg-slate-200 rounded-md  items-center justify-center  lg:py-4 flex overflow-hidden">
+        <div className="flex flex-1 overflow-hidden rounded-md bg-slate-200 px-1 py-4 lg:ml-10">
           {showClassForm ? (
             <AddClass />
           ) : (
-            <div>
+            <div className=" w-full">
               {error ? (
                 <p className="text-center text-red-500">{error}</p>
               ) : isLoading ? (
                 <p className="text-center text-slate-700">Loading...</p>
               ) : classes.length > 0 ? (
-                <div className=" h-full py-1 flex  flex-col">
-                  <div className="flex gap-1">
+                <div className=" flex h-full w-full flex-col py-1">
+                  <div className="mx-auto flex w-full justify-center gap-1 md:w-3/5 ">
                     <span className="w-6"></span>
-                    <span className="w-[250px] bg-[#006666] text-white font-semibold rounded-md text-center select-none">
+                    <span className="w-[38%] max-w-[350px] select-none rounded-md bg-[#006666] text-center font-semibold text-white">
                       Name
                     </span>
-                    <span className="w-[250px] bg-[#006666] text-white font-semibold rounded-md text-center select-none">
+                    <span className="w-[38%] max-w-[350px] select-none rounded-md bg-[#006666] text-center font-semibold text-white">
                       In Charge Teacher
                     </span>
+                    <span className="ml-2 hidden w-12 md:block"></span>
                   </div>
-                  <div className="mt-4 flex flex-col h-[445px] py-1 overflow-auto gap-2">
-                    {classes.map((item, index) => (
-                      <div key={index} className=" flex gap-1">
-                        <span className="font-semibold w-6">
+                  <div className="mx-auto  mt-4 flex h-[445px] w-full flex-col gap-2 overflow-auto py-1 md:w-3/5">
+                    {classes.map((clss, index) => (
+                      <div
+                        key={index}
+                        className=" flex w-full justify-center gap-1"
+                      >
+                        <span className="w-6 font-semibold">
                           {index < 9 ? '0' + (index + 1) : index + 1}.
                         </span>
-                        <span className="w-[250px] bg-slate-600 text-white font-semibold rounded-md pl-8 cursor-pointer hover:underline">
-                          {item.name}
+                        <span className="w-[38%] max-w-[350px] cursor-pointer rounded-md bg-slate-600 pl-4 font-semibold text-white hover:underline">
+                          {clss.name}
                         </span>
-                        <span className="w-[250px] bg-slate-600 text-white font-semibold rounded-md pl-8">
-                          {item.incharge_teacher}
+                        <span className="w-[38%] max-w-[350px] rounded-md bg-slate-600 pl-4 font-semibold text-white">
+                          {clss.incharge_teacher}
                         </span>
 
                         <span
-                          onClick={() => handleDelete(item.id)}
-                          className="font-semibold text-red-600 cursor-pointer hover:underline select-none ml-2"
+                          onClick={() => handleDelete(clss.id)}
+                          className="ml-2 hidden w-12 cursor-pointer select-none font-semibold text-red-600 hover:underline md:block"
                         >
                           Delete
                         </span>
@@ -99,7 +103,7 @@ const ClassesList = () => {
                   </div>
                 </div>
               ) : (
-                <p className="text-3xl font-semibold">No Classes</p>
+                <p className="text-3xl font-semibold">No Teachers</p>
               )}
             </div>
           )}
