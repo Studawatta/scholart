@@ -9,7 +9,7 @@ import { errorHandler } from '../utils/error.js';
 export const addClassController = (req, res, next) => {
   const data = {
     name: req.body.name,
-    incharge_teacher: req.body.incharge_teacher,
+    incharge_teacher: req.body.inchargeTeacherId,
     user_id: req.user.id,
   };
 

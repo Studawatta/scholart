@@ -15,7 +15,7 @@ export const addStudent = (data, callBack) => {
 };
 
 export const getStudentsByUser = (userId, callBack) => {
-  const q = 'SELECT * FROM students WHERE user_id = ?';
+  const q = 'SELECT * FROM students_view WHERE user_id = ?';
 
   db.query(q, [userId], (error, results) => {
     if (error) {

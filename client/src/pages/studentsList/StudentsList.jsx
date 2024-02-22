@@ -99,13 +99,13 @@ const StudentsList = () => {
             ) : (
               classes.map((stdClass) => (
                 <button
-                  key={stdClass.id}
+                  key={stdClass.class_id}
                   className={` border-primaryBlue flex w-fit min-w-24  cursor-pointer select-none items-center justify-center 
                       rounded-lg border-2 px-2 py-[2px] font-semibold text-slate-600 hover:bg-slate-600 hover:text-white lg:py-1
-                       ${studentClass === stdClass.name ? 'bg-slate-600 text-white' : 'bg-white text-slate-600'}`}
-                  onClick={() => setStudentClass(stdClass.name)}
+                       ${studentClass === stdClass.class_name ? 'bg-slate-600 text-white' : 'bg-white text-slate-600'}`}
+                  onClick={() => setStudentClass(stdClass.class_name)}
                 >
-                  <span>{stdClass.name.toUpperCase()}</span>
+                  <span>{stdClass.class_name.toUpperCase()}</span>
                 </button>
               ))
             )}
@@ -146,7 +146,7 @@ const StudentsList = () => {
                       searchTerm
                         ? students
                             .filter((student) =>
-                              student.name
+                              student.student_name
                                 .toLowerCase()
                                 .includes(searchTerm.toLowerCase())
                             )
@@ -159,14 +159,16 @@ const StudentsList = () => {
                                   {index < 9 ? '0' + (index + 1) : index + 1}.
                                 </span>
                                 <span className={tableNameColStyle}>
-                                  {student.name}
+                                  {student.student_name}
                                 </span>
                                 <span className={tableClassColStyle}>
-                                  {student.class}
+                                  {student.class_name}
                                 </span>
 
                                 <span
-                                  onClick={() => handleDelete(student.id)}
+                                  onClick={() =>
+                                    handleDelete(student.student_id)
+                                  }
                                   className={tableDeleteBtnStyle}
                                 >
                                   Delete
@@ -178,20 +180,22 @@ const StudentsList = () => {
                           ? students.map((student, index) => (
                               <div
                                 key={index}
-                                className=" flex w-full justify-center gap-1"
+                                className=" flex justify-center gap-1"
                               >
                                 <span className="w-6 font-semibold">
                                   {index < 9 ? '0' + (index + 1) : index + 1}.
                                 </span>
                                 <span className={tableNameColStyle}>
-                                  {student.name}
+                                  {student.student_name}
                                 </span>
                                 <span className={tableClassColStyle}>
-                                  {student.class}
+                                  {student.class_name}
                                 </span>
 
                                 <span
-                                  onClick={() => handleDelete(student.id)}
+                                  onClick={() =>
+                                    handleDelete(student.student_id)
+                                  }
                                   className={tableDeleteBtnStyle}
                                 >
                                   Delete
@@ -201,7 +205,7 @@ const StudentsList = () => {
                           : // FILTER BY CLASS
                             students
                               .filter(
-                                (student) => student.class === studentClass
+                                (student) => student.class_name === studentClass
                               )
                               .map((student, index) => (
                                 <div
@@ -212,14 +216,16 @@ const StudentsList = () => {
                                     {index < 9 ? '0' + (index + 1) : index + 1}.
                                   </span>
                                   <span className={tableNameColStyle}>
-                                    {student.name}
+                                    {student.student_name}
                                   </span>
                                   <span className={tableClassColStyle}>
-                                    {student.class}
+                                    {student.class_name}
                                   </span>
 
                                   <span
-                                    onClick={() => handleDelete(student.id)}
+                                    onClick={() =>
+                                      handleDelete(student.student_id)
+                                    }
                                     className={tableDeleteBtnStyle}
                                   >
                                     Delete

@@ -125,8 +125,8 @@ const AddStudent = () => {
                   <option value="" disabled>
                     Select a class
                   </option>
-                  {classes.map((item) => (
-                    <option value={item.name}>{item.name}</option>
+                  {classes.map((clss) => (
+                    <option value={clss.class_id}>{clss.class_name}</option>
                   ))}
                 </select>
                 <div className=" text-sm text-red-500 ">

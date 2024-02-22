@@ -10,6 +10,7 @@ import Signin from './pages/signin/Signin';
 import Signup from './pages/signup/Signup';
 import StudentsList from './pages/studentsList/StudentsList';
 import TeachersList from './pages/teachersList/TeachersList';
+import TeacherProfile from './pages/teacherProfile/TeacherProfile';
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
 
@@ -37,6 +38,7 @@ const App = () => {
           <Route path="/students" element={<StudentsList />} />
           <Route path="/teachers" element={<TeachersList />} />
           <Route path="/classes" element={<ClassesList />} />
+          <Route path="/teacher/profile/:id" element={<TeacherProfile />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

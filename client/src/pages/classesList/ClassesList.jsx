@@ -86,14 +86,14 @@ const ClassesList = () => {
                           {index < 9 ? '0' + (index + 1) : index + 1}.
                         </span>
                         <span className="w-[38%] max-w-[350px] cursor-pointer rounded-md bg-slate-600 pl-4 font-semibold text-white hover:underline">
-                          {clss.name}
+                          {clss.class_name}
                         </span>
                         <span className="w-[38%] max-w-[350px] rounded-md bg-slate-600 pl-4 font-semibold text-white">
                           {clss.incharge_teacher}
                         </span>
 
                         <span
-                          onClick={() => handleDelete(clss.id)}
+                          onClick={() => handleDelete(clss.class_id)}
                           className="ml-2 hidden w-12 cursor-pointer select-none font-semibold text-red-600 hover:underline md:block"
                         >
                           Delete
@@ -103,7 +103,7 @@ const ClassesList = () => {
                   </div>
                 </div>
               ) : (
-                <p className="text-3xl font-semibold">No Teachers</p>
+                <p className="text-3xl font-semibold">No Classes</p>
               )}
             </div>
           )}
