@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { IoMdClose } from 'react-icons/io';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,8 +12,13 @@ const AddClass = () => {
   const dispatch = useDispatch();
   const [isPending, setIsPending] = useState(false);
   const [error, setError] = useState('');
+
   const [showDropDown, setShowDropDown] = useState(false);
-  const [incharge, setIncharge] = useState('');
+  const [inchargeTeacher, setInchargeTeacher] = useState('');
+  const [formData, setFormData] = useState({
+    name: '',
+    inchargeTeacherId: '',
+  });
 
   const dropDownRef = useRef();
 
@@ -27,13 +31,6 @@ const AddClass = () => {
       }),
   });
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm();
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -45,15 +42,19 @@ const AddClass = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!formData.inchargeTeacherId) {
+      return setError('Teacher that you entered does not exist!');
+    }
     try {
       setIsPending(true);
-      mutation.mutate(data);
+      mutation.mutate(formData);
       setError('');
       setIsPending(false);
       alert('Class added!');
-      reset();
-      setIncharge('');
+      setFormData({ name: '', inchargeTeacherId: '' });
+      setInchargeTeacher('');
     } catch (error) {
       setIsPending(false);
       setError(error.message);
@@ -85,7 +86,7 @@ const AddClass = () => {
         </p>
       ) : (
         <form
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit}
           className="border-primaryBlue mx-auto mt-4 w-3/4 rounded-md border-2 px-8 py-8"
         >
           <div className="flex w-full flex-col items-center ">
@@ -94,17 +95,16 @@ const AddClass = () => {
             <div className={inputContStyle}>
               <label htmlFor="name" className="font-serif text-slate-800">
                 Name:
-                {errors?.name?.type === 'required' && (
-                  <span className=" text-sm text-red-500 ">*Required</span>
-                )}
               </label>
               <input
                 type="text"
                 id="name"
-                {...register('name', {
-                  required: true,
-                })}
+                value={formData.name}
                 className={inputStyle}
+                required
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
               />
             </div>
 
@@ -115,29 +115,36 @@ const AddClass = () => {
                 className="font-serif text-slate-800"
               >
                 In charge teacher:
-                {errors?.incharge_teacher?.type === 'required' && (
-                  <span className=" text-sm text-red-500 ">*Required</span>
-                )}
               </label>
               <div className=" flex w-full items-center justify-between rounded-md border border-slate-400 bg-white px-4 py-[2px] outline-none">
                 <input
                   type="text"
                   id="incharge_teacher"
-                  value={incharge}
-                  {...register('incharge_teacher', { required: true })}
+                  value={inchargeTeacher}
                   className="w-[95%] focus:outline-none"
-                  onChange={(e) => setIncharge(e.target.value)}
+                  onChange={(e) => setInchargeTeacher(e.target.value)}
+                  required
                   onFocus={() => setShowDropDown(true)}
                 />
-                {incharge !== '' ? (
+                {inchargeTeacher !== '' ? (
                   <IoMdClose
                     className=" cursor-pointer rounded-full bg-slate-300 p-[2px] text-xs text-white"
-                    onClick={() => setIncharge('')}
+                    onClick={() => {
+                      setInchargeTeacher('');
+                      setFormData({ ...formData, inchargeTeacherId: '' });
+                    }}
                   />
                 ) : (
                   ''
                 )}
               </div>
+
+              {/* <input
+                type="text"
+                value={inchargeTeacherId}
+                className="hidden"
+                readOnly
+              /> */}
 
               {/* TEACHER'S NAMES DROPDOWN */}
               {showDropDown && (
@@ -146,14 +153,18 @@ const AddClass = () => {
                     .filter((teacher) =>
                       teacher.name
                         .toLowerCase()
-                        .includes(incharge.toLowerCase())
+                        .includes(inchargeTeacher.toLowerCase())
                     )
                     .map((teacher, index) => (
                       <span
                         className=" cursor-pointer pl-4 hover:bg-slate-200 "
                         key={index}
                         onClick={() => {
-                          setIncharge(teacher.name);
+                          setInchargeTeacher(teacher.name);
+                          setFormData({
+                            ...formData,
+                            inchargeTeacherId: teacher.id,
+                          });
                           setShowDropDown(false);
                         }}
                       >
@@ -164,7 +175,9 @@ const AddClass = () => {
               )}
             </div>
           </div>
+
           <button
+            type="submit"
             disabled={isPending}
             className="bg-primaryBlue hover:bg-primaryBlueHover mx-auto mt-6 block w-1/2 rounded-md py-[2px] font-semibold text-white"
           >

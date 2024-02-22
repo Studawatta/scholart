@@ -15,7 +15,7 @@ export const addClass = (data, callBack) => {
 };
 
 export const getClassesByUser = (userId, callBack) => {
-  const q = 'SELECT * FROM classes WHERE user_id = ?';
+  const q = 'SELECT * FROM classes_view WHERE user_id = ?';
 
   db.query(q, [userId], (error, results) => {
     if (error) {

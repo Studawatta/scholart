@@ -6,6 +6,7 @@ import { makeRequest } from '../../axios';
 import AddTeacher from '../../components/addTeacher/AddTeacher';
 import Header from '../../components/homeHeader/Header';
 import { setShowTeacherForm } from '../../redux/form/formSlice';
+import { Link } from 'react-router-dom';
 
 const TeachersList = () => {
   const dispatch = useDispatch();
@@ -120,9 +121,12 @@ const TeachersList = () => {
                               <span className="w-6 font-semibold">
                                 {index < 9 ? '0' + (index + 1) : index + 1}.
                               </span>
-                              <span className={tableNameColStyle}>
+                              <Link
+                                to={'/teacher/profile/' + teacher.id}
+                                className={tableNameColStyle}
+                              >
                                 {teacher.name}
-                              </span>
+                              </Link>
                               <span className={tableSubjectColStyle}>
                                 {teacher.subject}
                               </span>
@@ -143,9 +147,12 @@ const TeachersList = () => {
                             <span className="w-6 font-semibold">
                               {index < 9 ? '0' + (index + 1) : index + 1}.
                             </span>
-                            <span className={tableNameColStyle}>
+                            <Link
+                              to={'/teacher/profile/' + teacher.id}
+                              className={tableNameColStyle}
+                            >
                               {teacher.name}
-                            </span>
+                            </Link>
                             <span className={tableSubjectColStyle}>
                               {teacher.subject}
                             </span>

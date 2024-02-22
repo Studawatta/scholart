@@ -14,6 +14,7 @@ export const addTeacherController = (req, res, next) => {
     user_id: req.user.id,
   };
 
+  console.log(data.appointed_date);
   // eslint-disable-next-line no-unused-vars
   addTeacher(data, (error, results) => {
     if (error) {
@@ -34,6 +35,16 @@ export const getTeachersController = (req, res, next) => {
     }
 
     return res.status(200).json(results);
+  });
+};
+
+export const getTeacherController = (req, res, next) => {
+  getTeacherById(req.params.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+
+    return res.status(200).json(results[0]);
   });
 };
 
