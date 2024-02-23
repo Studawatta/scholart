@@ -3,6 +3,7 @@ import {
   getTeachersByUser,
   getTeacherById,
   deleteTeacher,
+  updateTeacher,
 } from '../services/teacher.sevices.js';
 import { errorHandler } from '../utils/error.js';
 
@@ -11,10 +12,10 @@ export const addTeacherController = (req, res, next) => {
     name: req.body.name,
     subject: req.body.subject,
     appointed_date: req.body.appointed_date,
+    phone: req.body.phone,
     user_id: req.user.id,
   };
 
-  console.log(data.appointed_date);
   // eslint-disable-next-line no-unused-vars
   addTeacher(data, (error, results) => {
     if (error) {
@@ -45,6 +46,40 @@ export const getTeacherController = (req, res, next) => {
     }
 
     return res.status(200).json(results[0]);
+  });
+};
+
+export const updateTeacherController = (req, res, next) => {
+  const data = {
+    name: req.body.name,
+    subject: req.body.subject,
+    appointed_date: req.body.appointed_date,
+    phone: req.body.phone,
+    address: req.body.address,
+    birth_date: req.body.birth_date,
+    proPic: req.body.proPic,
+    id: req.params.id,
+  };
+
+  getTeacherById(req.params.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    if (results.length === 0) {
+      return next(errorHandler(404, 'Teacher not found!'));
+    }
+    // eslint-disable-next-line no-unused-vars
+    if (results[0].user_id !== req.user.id) {
+      return next(errorHandler(401, 'Unauthorized!'));
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    updateTeacher(data, (error, results) => {
+      if (error) {
+        return next(error);
+      }
+      return res.status(200).json('Teacher updated!');
+    });
   });
 };
 

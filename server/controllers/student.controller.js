@@ -10,8 +10,8 @@ export const addStudentController = (req, res, next) => {
   const data = {
     name: req.body.name,
     class: req.body.class,
-    age: req.body.age,
-    gender: req.body.gender,
+    birth_date: req.body.birth_date,
+    phone: req.body.phone,
     user_id: req.user.id,
   };
   // eslint-disable-next-line no-unused-vars
@@ -32,6 +32,16 @@ export const getStudentsController = (req, res, next) => {
       return next(error);
     }
     return res.status(200).json(results);
+  });
+};
+
+export const getStudentController = (req, res, next) => {
+  getStudentById(req.params.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+
+    return res.status(200).json(results[0]);
   });
 };
 

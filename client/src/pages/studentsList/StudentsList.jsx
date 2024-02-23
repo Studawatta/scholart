@@ -6,6 +6,7 @@ import { makeRequest } from '../../axios';
 import AddStudent from '../../components/addStudent/AddStudent';
 import Header from '../../components/homeHeader/Header';
 import { setShowStudentForm } from '../../redux/form/formSlice';
+import { Link } from 'react-router-dom';
 
 const StudentsList = () => {
   const dispatch = useDispatch();
@@ -158,9 +159,12 @@ const StudentsList = () => {
                                 <span className="w-6 font-semibold">
                                   {index < 9 ? '0' + (index + 1) : index + 1}.
                                 </span>
-                                <span className={tableNameColStyle}>
+                                <Link
+                                  to={'/student/profile/' + student.student_id}
+                                  className={tableNameColStyle}
+                                >
                                   {student.student_name}
-                                </span>
+                                </Link>
                                 <span className={tableClassColStyle}>
                                   {student.class_name}
                                 </span>
@@ -185,9 +189,12 @@ const StudentsList = () => {
                                 <span className="w-6 font-semibold">
                                   {index < 9 ? '0' + (index + 1) : index + 1}.
                                 </span>
-                                <span className={tableNameColStyle}>
+                                <Link
+                                  to={'/student/profile/' + student.student_id}
+                                  className={tableNameColStyle}
+                                >
                                   {student.student_name}
-                                </span>
+                                </Link>
                                 <span className={tableClassColStyle}>
                                   {student.class_name}
                                 </span>
@@ -215,9 +222,14 @@ const StudentsList = () => {
                                   <span className="w-6 font-semibold">
                                     {index < 9 ? '0' + (index + 1) : index + 1}.
                                   </span>
-                                  <span className={tableNameColStyle}>
+                                  <Link
+                                    to={
+                                      '/student/profile/' + student.student_id
+                                    }
+                                    className={tableNameColStyle}
+                                  >
                                     {student.student_name}
-                                  </span>
+                                  </Link>
                                   <span className={tableClassColStyle}>
                                     {student.class_name}
                                   </span>

@@ -11,6 +11,8 @@ import Signup from './pages/signup/Signup';
 import StudentsList from './pages/studentsList/StudentsList';
 import TeachersList from './pages/teachersList/TeachersList';
 import TeacherProfile from './pages/teacherProfile/TeacherProfile';
+import StudentProfile from './pages/studentProfile/StudentProfile';
+import UpdateTeacher from './pages/updateTeacher/UpdateTeacher';
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
 
@@ -39,6 +41,8 @@ const App = () => {
           <Route path="/teachers" element={<TeachersList />} />
           <Route path="/classes" element={<ClassesList />} />
           <Route path="/teacher/profile/:id" element={<TeacherProfile />} />
+          <Route path="/student/profile/:id" element={<StudentProfile />} />
+          <Route path="/teacher/update/:id" element={<UpdateTeacher />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

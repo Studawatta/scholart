@@ -2,9 +2,15 @@ import { db } from '../connect.js';
 
 export const addStudent = (data, callBack) => {
   const q =
-    'INSERT INTO students (`name`,`class`, `age`,`gender`,`user_id`) VALUES (?,?,?,?,?)';
+    'INSERT INTO students (`name`,`class`, `birth_date`,`phone`,`user_id`) VALUES (?,?,?,?,?)';
 
-  const values = [data.name, data.class, data.age, data.gender, data.user_id];
+  const values = [
+    data.name,
+    data.class,
+    data.birth_date,
+    data.phone,
+    data.user_id,
+  ];
 
   db.query(q, values, (error, results) => {
     if (error) {
@@ -26,7 +32,7 @@ export const getStudentsByUser = (userId, callBack) => {
 };
 
 export const getStudentById = (id, callBack) => {
-  const q = 'SELECT * FROM students WHERE id = ?';
+  const q = 'SELECT * FROM students_view WHERE student_id = ?';
 
   db.query(q, [id], (error, results) => {
     if (error) {

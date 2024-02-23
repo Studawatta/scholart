@@ -2,9 +2,15 @@ import { db } from '../connect.js';
 
 export const addTeacher = (data, callBack) => {
   const q =
-    'INSERT INTO teachers (`name`,`subject`,`appointed_date`,`user_id`) VALUES (?,?,?,?)';
+    'INSERT INTO teachers (`name`,`subject`,`appointed_date`,`phone`,`user_id`) VALUES (?,?,?,?,?)';
 
-  const values = [data.name, data.subject, data.appointed_date, data.user_id];
+  const values = [
+    data.name,
+    data.subject,
+    data.appointed_date,
+    data.phone,
+    data.user_id,
+  ];
 
   db.query(q, values, (error, results) => {
     if (error) {
@@ -29,6 +35,29 @@ export const getTeacherById = (id, callBack) => {
   const q = 'SELECT * FROM teachers WHERE id = ?';
 
   db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
+export const updateTeacher = (data, callBack) => {
+  const q =
+    'UPDATE teachers SET `name`=?,`subject`=?,`appointed_date`=?,`phone`=?,`address`=?,`birth_date`=?,`profile_pic`=? WHERE id=?';
+
+  const values = [
+    data.name,
+    data.subject,
+    data.appointed_date,
+    data.phone,
+    data.address,
+    data.birth_date,
+    data.proPic,
+    data.id,
+  ];
+
+  db.query(q, values, (error, results) => {
     if (error) {
       return callBack(error);
     }

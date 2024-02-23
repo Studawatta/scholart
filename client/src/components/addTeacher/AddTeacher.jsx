@@ -106,7 +106,7 @@ const AddTeacher = () => {
             </div>
           </div>
 
-          <div className=" w-full md:w-[45%]">
+          <div className=" flex w-full  flex-col md:w-[45%] md:gap-4">
             {/* APPOINTED DATE INPUT */}
             <div className={inputContStyle}>
               <label htmlFor="subject" className="font-serif text-slate-800">
@@ -124,6 +124,23 @@ const AddTeacher = () => {
                 {errors?.appointed_date?.type === 'required' && (
                   <p>*Required</p>
                 )}
+              </div>
+            </div>
+            {/* PHONE INPUT */}
+            <div className={inputContStyle}>
+              <label htmlFor="phone" className="font-serif text-slate-800">
+                phone:
+              </label>
+              <input
+                type="text"
+                id="phone"
+                {...register('phone', {
+                  required: true,
+                })}
+                className={inputStyle}
+              />
+              <div className="text-sm text-red-500">
+                {errors?.phone?.type === 'required' && <p>*Required</p>}
               </div>
             </div>
           </div>

@@ -1,9 +1,10 @@
 import React from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../../components/homeHeader/Header';
 import empty_propic from '../../assets/empty_propic.png';
 import { makeRequest } from '../../axios';
 import { useQuery } from 'react-query';
+import { FaArrowLeftLong } from 'react-icons/fa6';
 
 const TeacherProfile = () => {
   const params = useParams();
@@ -15,7 +16,7 @@ const TeacherProfile = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['teachers'],
+    queryKey: ['teacher'],
     queryFn: async () =>
       await makeRequest.get(`/teacher/profile/${teacherId}`).then((res) => {
         return res.data;
@@ -36,91 +37,95 @@ const TeacherProfile = () => {
   return (
     <div className=" px-4 py-8 lg:px-20">
       <Header />
-      {isLoading ? (
-        <p>Loading...</p>
-      ) : error ? (
-        <p>{error}</p>
-      ) : (
-        <div className=" mt-8 flex py-10 bg-slate-200 flex-col gap-5">
-          <div className="mx-auto flex flex-col items-center">
-            <img
-              src={empty_propic}
-              alt="profile_picture"
-              className=" w-32 h-32 md:w-40 md:h-40 rounded-full object-cover border-2  border-slate-400 "
-            />
-            <h1 className=" text-xl md:text-2xl text-slate-700 font-semibold text-center">
-              {teacher.name}
-            </h1>
-          </div>
-          <div className=" text-sm md:text-base w-fit md:w-1/2 max-w-[700px] mx-auto flex  flex-col-reverse md:flex-row  ">
-            <div className="flex-1 flex md:justify-center px-4 py-4 md:border-r-2 border-white">
-              <div className="flex flex-col gap-4 w-fit">
-                <h2 className=" text-xs md:text-sm italic underline text-slate-500 font-semibold">
-                  Persanol Details
-                </h2>
-                <p className="font-semibold text-slate-700">
-                  Address :{' '}
-                  <span className="font-normal">
-                    {teacher.address && teacher.address}
-                  </span>{' '}
-                </p>
-                <p className="font-semibold text-slate-700">
-                  Birth Date :{' '}
-                  <span className="font-normal">
-                    {teacher.birth_date && teacher.birth_date}
-                  </span>{' '}
-                </p>
-                <p className="font-semibold text-slate-700">
-                  Phone :{' '}
-                  <span className="font-normal">
-                    {teacher.phone && teacher.phone}
-                  </span>{' '}
-                </p>
-                <div className="flex flex-col gap-2">
-                  <button className="bg-primaryGreen rounded-md w-40 uppercase text-white hover:bg-primaryGreenHover">
-                    update
-                  </button>
-                  <button
-                    onClick={() => handleDelete(teacher.id)}
-                    className="bg-red-600 rounded-md w-40 uppercase text-white hover:bg-red-700 "
-                  >
-                    delete
-                  </button>
+      <div className="mt-8 flex flex-col gap-5 lg:px-40">
+        {isLoading ? (
+          <p>Loading...</p>
+        ) : error ? (
+          <p>{error}</p>
+        ) : (
+          <div className="flex flex-1 flex-col overflow-hidden rounded-md bg-slate-200  py-4">
+            <div className="flex h-10 w-full items-center  px-20">
+              <Link
+                to={'/teachers'}
+                className="flex w-fit cursor-pointer select-none items-center text-xl font-semibold text-primaryBlue hover:text-primaryBlueHover"
+              >
+                {' '}
+                <FaArrowLeftLong /> Back
+              </Link>
+            </div>
+            <div className="mx-auto flex flex-col items-center">
+              <img
+                src={teacher.profile_pic ? teacher.profile_pic : empty_propic}
+                alt="profile_picture"
+                className=" h-32 w-32 rounded-full border-2 border-slate-400 object-cover md:h-40  md:w-40 "
+              />
+              <h1 className=" text-center text-xl font-semibold text-slate-700 md:text-2xl">
+                {teacher.name}
+              </h1>
+            </div>
+            <div className=" mx-auto flex w-fit max-w-[700px] flex-col-reverse text-sm md:w-1/2  md:flex-row md:text-base  ">
+              <div className="flex flex-1 border-white px-4 py-4 md:justify-center md:border-r-2">
+                <div className="flex w-fit flex-col gap-4">
+                  <h2 className=" text-xs font-semibold italic text-slate-500 underline md:text-sm">
+                    Persanol Details
+                  </h2>
+                  <p className="font-semibold text-slate-700">
+                    Address :{' '}
+                    <span className="font-normal">
+                      {teacher.address && teacher.address}
+                    </span>{' '}
+                  </p>
+                  <p className="font-semibold text-slate-700">
+                    Birth Date :{' '}
+                    <span className="font-normal">
+                      {teacher.birth_date && teacher.birth_date}
+                    </span>{' '}
+                  </p>
+                  <p className="font-semibold text-slate-700">
+                    Phone :{' '}
+                    <span className="font-normal">
+                      {teacher.phone && teacher.phone}
+                    </span>{' '}
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    <Link
+                      to={'/teacher/update/' + teacher.id}
+                      className="w-40 rounded-md bg-primaryGreen text-center uppercase text-white hover:bg-primaryGreenHover"
+                    >
+                      update
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(teacher.id)}
+                      className="w-40 rounded-md bg-red-600 uppercase text-white hover:bg-red-700 "
+                    >
+                      delete
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <div className="flex-1 flex md:justify-center py-4 px-4">
-              <div className="flex flex-col gap-4  w-fit ">
-                <h2 className="text-xs md:text-sm italic underline text-slate-500 font-semibold">
-                  Professional Details
-                </h2>
-                <p className="font-semibold text-slate-700">
-                  Subject :{' '}
-                  <span className="font-normal">{teacher.subject}</span>{' '}
-                </p>
-                <div>
+              <div className="flex flex-1 px-4 py-4 md:justify-center">
+                <div className="flex w-fit flex-col  gap-4 ">
+                  <h2 className="text-xs font-semibold italic text-slate-500 underline md:text-sm">
+                    Professional Details
+                  </h2>
                   <p className="font-semibold text-slate-700">
-                    Education Qualifications :{' '}
+                    Subject :{' '}
+                    <span className="font-normal">{teacher.subject}</span>{' '}
                   </p>
 
-                  <ul className="list-disc ml-10">
-                    {teacher.qualifications &&
-                      teacher.qualifications.map((qualification, index) => (
-                        <li key={index}>{qualification}</li>
-                      ))}
-                  </ul>
+                  <p className="font-semibold text-slate-700">
+                    Appointed Date :{' '}
+                    <span className="font-normal">
+                      {teacher.appointed_date}
+                    </span>{' '}
+                  </p>
                 </div>
-
-                <p className="font-semibold text-slate-700">
-                  Appointed Date :{' '}
-                  <span className="font-normal">{teacher.appointed_date}</span>{' '}
-                </p>
               </div>
             </div>
           </div>
-        </div>
-      )}
+        )}
+      </div>
     </div>
   );
 };
