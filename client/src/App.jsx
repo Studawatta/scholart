@@ -1,6 +1,12 @@
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { useSelector } from 'react-redux';
-import { BrowserRouter, Outlet, Route, Routes } from 'react-router-dom';
+import {
+  BrowserRouter,
+  Navigate,
+  Outlet,
+  Route,
+  Routes,
+} from 'react-router-dom';
 import Footer from './components/footer/Footer';
 import Navbar from './components/navbar/Navabar';
 import ClassesList from './pages/classesList/ClassesList';
@@ -13,6 +19,8 @@ import TeachersList from './pages/teachersList/TeachersList';
 import TeacherProfile from './pages/teacherProfile/TeacherProfile';
 import StudentProfile from './pages/studentProfile/StudentProfile';
 import UpdateTeacher from './pages/updateTeacher/UpdateTeacher';
+import UpdateStudent from './pages/updateStudent/UpdateStudent';
+import ClassProfile from './pages/classProfile/ClassProfile';
 const App = () => {
   const { currentUser } = useSelector((state) => state.user);
 
@@ -28,6 +36,10 @@ const App = () => {
     );
   };
 
+  const PrivateRoute = () => {
+    return currentUser ? <Outlet /> : <Navigate to="/" />;
+  };
+
   return (
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
@@ -37,12 +49,17 @@ const App = () => {
             <Route path="/signin" element={<Signin />} />
             <Route path="/signup" element={<Signup />} />
           </Route>
-          <Route path="/students" element={<StudentsList />} />
-          <Route path="/teachers" element={<TeachersList />} />
-          <Route path="/classes" element={<ClassesList />} />
-          <Route path="/teacher/profile/:id" element={<TeacherProfile />} />
-          <Route path="/student/profile/:id" element={<StudentProfile />} />
-          <Route path="/teacher/update/:id" element={<UpdateTeacher />} />
+
+          <Route element={<PrivateRoute />}>
+            <Route path="/students" element={<StudentsList />} />
+            <Route path="/teachers" element={<TeachersList />} />
+            <Route path="/classes" element={<ClassesList />} />
+            <Route path="/teacher/profile/:id" element={<TeacherProfile />} />
+            <Route path="/student/profile/:id" element={<StudentProfile />} />
+            <Route path="/class/profile/:id" element={<ClassProfile />} />
+            <Route path="/teacher/update/:id" element={<UpdateTeacher />} />
+            <Route path="/student/update/:id" element={<UpdateStudent />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

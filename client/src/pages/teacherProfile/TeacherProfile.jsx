@@ -53,11 +53,11 @@ const TeacherProfile = () => {
                 <FaArrowLeftLong /> Back
               </Link>
             </div>
-            <div className="mx-auto flex flex-col items-center">
+            <div className="mx-auto flex flex-col gap-1 items-center">
               <img
                 src={teacher.profile_pic ? teacher.profile_pic : empty_propic}
                 alt="profile_picture"
-                className=" h-32 w-32 rounded-full border-2 border-slate-400 object-cover md:h-40  md:w-40 "
+                className=" h-32 w-32 rounded-full border-2 border-slate-400 object-cover  "
               />
               <h1 className=" text-center text-xl font-semibold text-slate-700 md:text-2xl">
                 {teacher.name}
