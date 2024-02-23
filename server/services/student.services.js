@@ -42,6 +42,28 @@ export const getStudentById = (id, callBack) => {
   });
 };
 
+export const updateStudent = (data, callBack) => {
+  const q =
+    'UPDATE students SET `name`=?,`class`=?,`birth_date`=?,`phone`=?,`profile_pic`=?,`address`=? WHERE id=?';
+
+  const values = [
+    data.name,
+    data.class,
+    data.birth_date,
+    data.phone,
+    data.proPic,
+    data.address,
+    data.id,
+  ];
+
+  db.query(q, values, (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
 export const deleteStudent = (id, callBack) => {
   const q = 'DELETE FROM students WHERE `id` = ?';
 

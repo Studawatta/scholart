@@ -2,6 +2,7 @@ import {
   addStudent,
   getStudentsByUser,
   getStudentById,
+  updateStudent,
   deleteStudent,
 } from '../services/student.services.js';
 import { errorHandler } from '../utils/error.js';
@@ -42,6 +43,39 @@ export const getStudentController = (req, res, next) => {
     }
 
     return res.status(200).json(results[0]);
+  });
+};
+
+export const updateStudentController = (req, res, next) => {
+  const data = {
+    name: req.body.name,
+    class: req.body.class,
+    birth_date: req.body.birth_date,
+    phone: req.body.phone,
+    proPic: req.body.proPic,
+    address: req.body.address,
+    id: req.params.id,
+  };
+
+  getStudentById(req.params.id, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+    if (results.length === 0) {
+      return next(errorHandler(404, 'Student not found!'));
+    }
+    // eslint-disable-next-line no-unused-vars
+    if (results[0].user_id !== req.user.id) {
+      return next(errorHandler(401, 'Unauthorized!'));
+    }
+
+    // eslint-disable-next-line no-unused-vars
+    updateStudent(data, (error, results) => {
+      if (error) {
+        return next(error);
+      }
+      return res.status(200).json('Student updated!');
+    });
   });
 };
 

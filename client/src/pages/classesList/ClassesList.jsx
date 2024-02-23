@@ -6,6 +6,7 @@ import { makeRequest } from '../../axios';
 import AddClass from '../../components/addClass/AddClass';
 import Header from '../../components/homeHeader/Header';
 import { setShowClassForm } from '../../redux/form/formSlice';
+import { Link } from 'react-router-dom';
 
 const ClassesList = () => {
   const dispatch = useDispatch();
@@ -85,9 +86,12 @@ const ClassesList = () => {
                         <span className="w-6 font-semibold">
                           {index < 9 ? '0' + (index + 1) : index + 1}.
                         </span>
-                        <span className="w-[38%] max-w-[350px] cursor-pointer rounded-md bg-slate-600 pl-4 font-semibold text-white hover:underline">
+                        <Link
+                          to={`/class/profile/${clss.class_id}`}
+                          className="w-[38%] max-w-[350px] cursor-pointer rounded-md bg-slate-600 pl-4 font-semibold text-white hover:underline"
+                        >
                           {clss.class_name}
-                        </span>
+                        </Link>
                         <span className="w-[38%] max-w-[350px] rounded-md bg-slate-600 pl-4 font-semibold text-white">
                           {clss.incharge_teacher}
                         </span>
