@@ -11,7 +11,8 @@ import { setShowStudentForm } from '../../redux/form/formSlice';
 const schema = yup.object().shape({
   class: yup.string().notOneOf([''], 'You must select a class!'),
   name: yup.string().required('Required!'),
-  age: yup.string().required('Required!'),
+  birth_date: yup.string().required('Required!'),
+  phone: yup.string().required('Required!'),
 });
 
 const AddStudent = () => {
@@ -53,6 +54,7 @@ const AddStudent = () => {
     },
   });
   const onSubmit = async (data) => {
+    console.log(data);
     try {
       setIsPending(true);
       mutation.mutate(data);
@@ -126,7 +128,9 @@ const AddStudent = () => {
                     Select a class
                   </option>
                   {classes.map((clss) => (
-                    <option value={clss.class_id}>{clss.class_name}</option>
+                    <option key={clss.class_id} value={clss.class_id}>
+                      {clss.class_name}
+                    </option>
                   ))}
                 </select>
                 <div className=" text-sm text-red-500 ">
@@ -137,51 +141,34 @@ const AddStudent = () => {
 
             <div className="flex flex-col gap-4 md:w-[45%]">
               <div className={inputContStyle}>
-                <label htmlFor="age" className="font-serif text-slate-800">
-                  Age:
+                <label
+                  htmlFor="birth_date"
+                  className="font-serif text-slate-800"
+                >
+                  Birth Date:
                 </label>
                 <input
-                  type="text"
-                  id="age"
-                  {...register('age')}
+                  type="date"
+                  id="birth_date"
+                  {...register('birth_date')}
                   className={inputStyle}
                 />
                 <div className="text-sm text-red-500">
-                  {errors.age && <p>{errors.age.message}</p>}
+                  {errors.birth_date && <p>{errors.birth_date.message}</p>}
                 </div>
               </div>
               <div className={inputContStyle}>
-                <p className="font-serif text-slate-800">Gender:</p>
-                <div className="flex gap-4">
-                  <div className="flex gap-2">
-                    <input
-                      type="radio"
-                      id="male"
-                      name="gender"
-                      defaultChecked
-                      value={'male'}
-                      {...register('gender')}
-                    />
-
-                    <label htmlFor="male" className="font-serif text-slate-800">
-                      Male
-                    </label>
-                  </div>
-                  <div className="flex gap-2">
-                    <input
-                      type="radio"
-                      id="female"
-                      name="gender"
-                      value={'female'}
-                      {...register('gender')}
-                    />
-                    <label
-                      htmlFor="female"
-                      className="font-serif text-slate-800"
-                    >
-                      Female
-                    </label>
-                  </div>
+                <label htmlFor="phone" className="font-serif text-slate-800">
+                  Phone:
+                </label>
+                <input
+                  type="text"
+                  id="phone"
+                  {...register('phone')}
+                  className={inputStyle}
+                />
+                <div className="text-sm text-red-500">
+                  {errors.phone && <p>{errors.phone.message}</p>}
                 </div>
               </div>
             </div>
