@@ -37,7 +37,7 @@ const UpdateStudent = () => {
   const [updateError, setUpdateError] = useState('');
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
-  const [proPic, setProPic] = useState(null);
+  const [proPic, setProPic] = useState('');
 
   //Fetching classes
   const { data: classes, isLoading: classLoading } = useQuery({
@@ -56,6 +56,7 @@ const UpdateStudent = () => {
     queryKey: ['student'],
     queryFn: async () =>
       await makeRequest.get(`/student/profile/${studentId}`).then((res) => {
+        setProPic(res.data.profile_pic);
         return res.data;
       }),
   });

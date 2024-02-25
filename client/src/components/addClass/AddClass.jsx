@@ -139,13 +139,6 @@ const AddClass = () => {
                 )}
               </div>
 
-              {/* <input
-                type="text"
-                value={inchargeTeacherId}
-                className="hidden"
-                readOnly
-              /> */}
-
               {/* TEACHER'S NAMES DROPDOWN */}
               {showDropDown && (
                 <div className="absolute bottom-0 top-[64px] flex h-fit max-h-32 w-full flex-col gap-2 overflow-auto rounded-md border border-slate-400 bg-white py-1 font-semibold text-slate-700">

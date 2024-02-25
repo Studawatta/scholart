@@ -26,6 +26,7 @@ const UpdateTeacher = () => {
   const [updateError, setUpdateError] = useState('');
   const [filePerc, setFilePerc] = useState(0);
   const [fileUploadError, setFileUploadError] = useState(false);
+  const [proPic, setProPic] = useState('');
 
   //fetching teacher
   const {
@@ -36,10 +37,10 @@ const UpdateTeacher = () => {
     queryKey: ['teacher'],
     queryFn: async () =>
       await makeRequest.get(`/teacher/profile/${teacherId}`).then((res) => {
+        setProPic(res.data.profile_pic);
         return res.data;
       }),
   });
-  const [proPic, setProPic] = useState(teacher.profile_pic);
 
   useEffect(() => {
     if (file) {

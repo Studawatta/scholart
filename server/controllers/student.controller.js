@@ -2,6 +2,7 @@ import {
   addStudent,
   getStudentsByUser,
   getStudentById,
+  getStudentsByClass,
   updateStudent,
   deleteStudent,
 } from '../services/student.services.js';
@@ -43,6 +44,16 @@ export const getStudentController = (req, res, next) => {
     }
 
     return res.status(200).json(results[0]);
+  });
+};
+
+export const getStudentsByClassController = (req, res, next) => {
+  getStudentsByClass(req.params.classId, (error, results) => {
+    if (error) {
+      return next(error);
+    }
+
+    return res.status(200).json(results);
   });
 };
 
