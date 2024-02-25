@@ -26,13 +26,26 @@ export const getClassesByUser = (userId, callBack) => {
 };
 
 export const getClassById = (id, callBack) => {
-  const q = 'SELECT * FROM classes WHERE id = ?';
+  const q = 'SELECT * FROM classes_view WHERE class_id = ?';
 
   db.query(q, [id], (error, results) => {
     if (error) {
       return callBack(error);
     }
 
+    return callBack(null, results);
+  });
+};
+
+export const updateClass = (data, callBack) => {
+  const q = 'UPDATE classes SET `name`=?,`incharge_teacher`=? WHERE id=?';
+
+  const values = [data.name, data.incharge_teacher, data.id];
+
+  db.query(q, values, (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
     return callBack(null, results);
   });
 };

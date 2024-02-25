@@ -42,6 +42,17 @@ export const getStudentById = (id, callBack) => {
   });
 };
 
+export const getStudentsByClass = (id, callBack) => {
+  const q = 'SELECT name FROM students WHERE class = ?';
+
+  db.query(q, [id], (error, results) => {
+    if (error) {
+      return callBack(error);
+    }
+    return callBack(null, results);
+  });
+};
+
 export const updateStudent = (data, callBack) => {
   const q =
     'UPDATE students SET `name`=?,`class`=?,`birth_date`=?,`phone`=?,`profile_pic`=?,`address`=? WHERE id=?';
