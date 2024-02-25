@@ -17,13 +17,14 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon server/index.js ",
+    "start": "node server/index.js ",
     "lint": "eslint . --ext .js",
     "format": "prettier --ignore-path .gitignore --write \"**/*.{js,jsx,css,scss}\"",
     "test": "echo \"Error: no test specified\" && exit 1",
     "prepare": "husky install",
     "client": "cd client && npm start",
-    "start": "concurrently -n 'server,client' \"nodemon server/index.js\" \"npm run client\""
+    "dev": "concurrently -n 'server,client' \"nodemon server/index.js\" \"npm run client\"",
+    "build": "npm install && npm install --prefix client && npm run build --prefix client"
   },
   "keywords": [],
   "author": "",
