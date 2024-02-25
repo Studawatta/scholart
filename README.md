@@ -29,4 +29,4 @@ Start the application
 ## Tech Stack
 
 **Client:** React, TailwindCSS, Redux toolkit, React-query
-**Client:** Node, Express, MySQL
+**Server:** Node, Express, MySQL
