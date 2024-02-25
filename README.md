@@ -29,4 +29,5 @@ Start the application
 ## Tech Stack
 
 **Client:** React, TailwindCSS, Redux toolkit, React-query
+\
 **Server:** Node, Express, MySQL
