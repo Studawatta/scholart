@@ -17,7 +17,7 @@ const Signup = () => {
   const onSubmit = async (data) => {
     try {
       setIsLoading(true);
-      await axios.post('http://localhost:8080/api/auth/signup', data);
+      await axios.post('https://scholart.onrender.com/api/auth/signup', data);
       setError('');
       setIsLoading(false);
       navigate('/signin');
